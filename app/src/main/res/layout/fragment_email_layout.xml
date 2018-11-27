@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/common_header_layout"/>
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_email"
+        android:layout_margin="@dimen/_20sdp"
+        android:text="Hei Bud, Please enter your Email id and Continue"
+        android:textAlignment="center"
+        android:textSize="@dimen/_14sdp" />
+
+
+    <EditText
+        android:id="@+id/login_email"
+        style="@style/commonEditText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/_10sdp"
+        android:hint="Enter Email"
+        android:imeOptions="actionDone"
+        android:inputType="textEmailAddress" />
+
+
+    <android.support.v7.widget.AppCompatButton
+        style="@style/squareButton"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_below="@+id/login_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Continue"
+        android:id="@+id/login_continue_button"
+        android:textColor="@color/white" />
+
+
+</RelativeLayout>

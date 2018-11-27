@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Blurt</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="no_conversation">You don\'t have any conversation. Start Conversation now.</string>
+    <string name="type_message">Type a message</string>
+    <string name="notify_chat_message_label">You are in waiting do you want to wait?</string>
+    <string name="cancel">Cancel</string>
+    <string name="notify_me">Notify Me</string>
+    <string name="no_internet_connection">Please enable data or wifi connection.</string>
+    <string name="camera_not_supported">Your device doesn\'t support camera.</string>
+    <string name="refresh">Refresh</string>
+    <string name="exit">Exit</string>
+    <string name="chat_welcome_message">Hi, Welcome to Blurt. How can we help you?</string>
+    <string name="chat_wait_message">Please wait while we connect you to an AstroBuddy.</string>
+    <string name="chat_sequence">All Astrobuddies are serving other customers. You are in the queue at position : %d</string>
+    <string name="astrobuddy_join_message">AstroBuddy will join the chat shortly. Please wait.</string>
+    <string name="typing_status">Typing…</string>
+    <string name="online_status">Online</string>
+    <string name="offline_status">Offline</string>
+    <string name="away_status">Away</string>
+    <string name="chat_query_sent">Your query has been sent.</string>
+    <string name="unknown_error">Unknown error occurred. Please try again.</string>
+    <string name="submit">Submit</string>
+    <string name="your_feedback">Your Feedback</string>
+    <string name="term_condition">By starting chat, you agree to Blurt\'s <font fgcolor="blue">Terms &amp; Conditions</font> and <font fgcolor="blue">Cookie &amp; Privacy Policy.</font></string>
+
+    <string name="action_home">Home</string>
+    <string name="action_profile">My Profile</string>
+    <string name="action_catalogues">Catalogues</string>
+    <string name="action_setting">Setting</string>
+    <string name="action_contact_us">Contact Us</string>
+    <string name="action_about_us">About Us</string>
+
+    <string-array name="navigation_menu">
+        <item>@string/action_home</item>
+        <item>@string/action_profile</item>
+        <item>@string/action_catalogues</item>
+        <item>@string/action_setting</item>
+        <item>@string/action_contact_us</item>
+        <item>@string/action_about_us</item>
+    </string-array>
+
+    <string-array name="category_array">
+        <item>Seating</item>
+        <item>Desks</item>
+        <item>Storage</item>
+        <item>Lighting/Lamps</item>
+        <item>Cabinets</item>
+        <item>Lobby Seats</item>
+    </string-array>
+</resources>

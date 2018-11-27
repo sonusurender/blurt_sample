@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="msg_status_icon_size">20dp</dimen>
+    <dimen name="toolbar_user_image_size">30dp</dimen>
+    <dimen name="button_curve_radius">40dp</dimen>
+    <dimen name="chat_status_size">10dp</dimen>
+    <dimen name="logo_with_name_height">@dimen/_80sdp</dimen>
+    <dimen name="edit_text_curve_radius">5dp</dimen>
+    <dimen name="profile_image_size">104dp</dimen>
+    <dimen name="chat_action_icon_size">@dimen/_40sdp</dimen>
+    <dimen name="chat_item_row_image_size">30dp</dimen>
+    <dimen name="banner_height">180dp</dimen>
+    <dimen name="category_image_height">70dp</dimen>
+    <dimen name="home_category_item_space_margin">12dp</dimen>
+</resources>

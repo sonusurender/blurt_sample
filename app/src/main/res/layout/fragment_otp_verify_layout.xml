@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/common_header_layout"/>
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please Enter OTP"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/otp_view"
+        android:textSize="@dimen/_16sdp"
+        android:textAlignment="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:id="@+id/otp_view"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/otp_value_one"
+            style="@style/OTPEditText"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:imeOptions="actionNext" >
+            <requestFocus/>
+        </android.support.v7.widget.AppCompatEditText>
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/otp_value_two"
+            style="@style/OTPEditText"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:imeOptions="actionNext" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/otp_value_three"
+            style="@style/OTPEditText"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:imeOptions="actionNext" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/otp_value_four"
+            style="@style/OTPEditText"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:imeOptions="actionDone" />
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/otp_view"
+        android:text="Resend OTP"
+        android:textAllCaps="false"
+        android:id="@+id/resend_otp"
+        android:textColor="@color/colorPrimary"
+        android:background="@android:color/transparent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_20sdp"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/resend_otp"
+        android:text="LOGIN"
+        style="@style/squareButton"
+        android:id="@+id/login"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_15sdp"/>
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OTP has been successfully sent. Please check spam/junk if not received."
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/login"
+        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/green"
+        android:layout_margin="@dimen/_12sdp"
+        android:textAlignment="center"/>
+
+
+
+</RelativeLayout>

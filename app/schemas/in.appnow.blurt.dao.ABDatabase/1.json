@@ -1,0 +1,90 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "859be63198e8fe916aaeab533fae7ba4",
+    "entities": [
+      {
+        "tableName": "Chat",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`msgTempId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `msgId` INTEGER NOT NULL, `message` TEXT, `senderId` TEXT, `messageStatus` TEXT, `sendDateTime` INTEGER NOT NULL, `sessionId` TEXT, `errorMsg` TEXT, `errorStatus` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "messageTemporaryId",
+            "columnName": "msgTempId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "messageId",
+            "columnName": "msgId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "message",
+            "columnName": "message",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "senderId",
+            "columnName": "senderId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "messageStatus",
+            "columnName": "messageStatus",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sendDateTime",
+            "columnName": "sendDateTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionId",
+            "columnName": "sessionId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "errorMsg",
+            "columnName": "errorMsg",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "errorStatus",
+            "columnName": "errorStatus",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "msgTempId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Chat_sendDateTime",
+            "unique": true,
+            "columnNames": [
+              "sendDateTime"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_Chat_sendDateTime` ON `${TABLE_NAME}` (`sendDateTime`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"859be63198e8fe916aaeab533fae7ba4\")"
+    ]
+  }
+}

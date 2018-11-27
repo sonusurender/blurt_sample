@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/common_header_layout" />
+
+    <RelativeLayout
+        android:id="@+id/signup_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/signup_email"
+            style="@style/commonEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_120sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:hint="Enter Email"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/signup_name"
+            style="@style/commonEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/signup_email"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:hint="Enter Name"
+            android:imeOptions="actionDone"
+            android:inputType="textCapWords" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/terms_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/signup_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:text="@string/term_condition"
+            android:textAlignment="center" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/signup_continue_button"
+            style="@style/squareButton"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_below="@+id/terms_condition"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="Continue" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/welcome_back_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ad_1" />
+
+
+        <ImageView
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_above="@+id/signup_user_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:src="@drawable/profile_icon" />
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/signup_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18sdp"
+            tools:text="Hi, Surender" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/re_terms_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/signup_user_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:imeOptions="actionDone"
+            android:text="@string/term_condition"
+            android:textAlignment="center" />
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/start_chat_button"
+            style="@style/squareButton"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_below="@+id/re_terms_condition"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="Start Chat" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/a_2" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
