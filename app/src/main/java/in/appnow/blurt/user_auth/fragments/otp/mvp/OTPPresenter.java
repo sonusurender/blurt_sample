@@ -1,8 +1,7 @@
 package in.appnow.blurt.user_auth.fragments.otp.mvp;
 
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.base.BasePresenter;
-import in.appnow.blurt.conversation_module.utils.ConversationUtils;
 import in.appnow.blurt.helper.PreferenceManger;
 import in.appnow.blurt.rest.CallbackWrapper;
 import in.appnow.blurt.rest.RestUtils;
@@ -11,7 +10,6 @@ import in.appnow.blurt.rest.request.ValidateUserRequest;
 import in.appnow.blurt.rest.response.BaseResponseModel;
 import in.appnow.blurt.rest.response.LoginResponseModel;
 import in.appnow.blurt.rest.response.UserProfile;
-import in.appnow.blurt.user_auth.fragments.login.mvp.LoginView;
 import in.appnow.blurt.utils.TextUtils;
 import in.appnow.blurt.utils.ToastUtils;
 import io.reactivex.Observable;
@@ -79,7 +77,7 @@ public class OTPPresenter implements BasePresenter {
     private Disposable observeResendOTPButtonClick() {
         return view.observeResendOTPButtonClick()
                 .doOnNext(__ -> model.showProgressDialog())
-                .map(isValidated -> TextUtils.isEmailIdValid(emailId) && AstroApplication.getInstance().isInternetConnected(true))
+                .map(isValidated -> TextUtils.isEmailIdValid(model.getAppCompatActivity(),emailId) && Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(true))
                 .observeOn(Schedulers.io())
                 .switchMap(isValidated -> {
                     if (isValidated) {
@@ -98,12 +96,12 @@ public class OTPPresenter implements BasePresenter {
                     @Override
                     protected void onSuccess(BaseResponseModel baseResponseModel) {
                         if (baseResponseModel != null) {
-                            ToastUtils.shortToast(baseResponseModel.getErrorMsg());
+                            ToastUtils.shortToast(model.getAppCompatActivity(),baseResponseModel.getErrorMsg());
                             if (!baseResponseModel.isErrorStatus()) {
                                 view.resetViews();
                             }
                         } else {
-                            ToastUtils.shortToast("Server error. Please retry.");
+                            ToastUtils.shortToast(model.getAppCompatActivity(),"Server error. Please retry.");
                         }
                     }
                 });
@@ -113,14 +111,14 @@ public class OTPPresenter implements BasePresenter {
     private Disposable observeLoginButtonClick() {
         return view.observeLoginButtonClick()
                 .doOnNext(__ -> model.showProgressDialog())
-                .map(isValidated -> view.validateOTP() && AstroApplication.getInstance().isInternetConnected(true))
+                .map(isValidated -> view.validateOTP() && Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(true))
                 .observeOn(Schedulers.io())
                 .switchMap(isValidated -> {
                     if (isValidated) {
                         ValidateUserRequest request = new ValidateUserRequest();
                         request.setEmailId(emailId);
                         request.setOtp(view.getOTP());
-                        request.setLicenseKey(RestUtils.getLicenseKey(AstroApplication.getInstance()));
+                        request.setLicenseKey(RestUtils.getLicenseKey(model.getAppCompatActivity()));
                         return model.verifyOTP(request);
                     } else {
                         LoginResponseModel responseModel = new LoginResponseModel();
@@ -134,7 +132,7 @@ public class OTPPresenter implements BasePresenter {
                     @Override
                     protected void onSuccess(LoginResponseModel loginResponseModel) {
                         if (loginResponseModel != null) {
-                            ToastUtils.shortToast(loginResponseModel.getErrorMsg());
+                            ToastUtils.shortToast(model.getAppCompatActivity(),loginResponseModel.getErrorMsg());
                             if (!loginResponseModel.isErrorStatus()) {
                                 if (loginResponseModel.getUserProfile().getUserStatus().equalsIgnoreCase(UserProfile.NEW_USER)) {
                                     model.replaceSignUpFragment(true, emailId);
@@ -143,10 +141,10 @@ public class OTPPresenter implements BasePresenter {
                                     model.replaceSignUpFragment(false, emailId);
                                 }
                             } else {
-                                ToastUtils.longToast(loginResponseModel.getErrorMsg());
+                                ToastUtils.longToast(model.getAppCompatActivity(),loginResponseModel.getErrorMsg());
                             }
                         } else {
-                            ToastUtils.shortToast("Server error. Please retry.");
+                            ToastUtils.shortToast(model.getAppCompatActivity(),"Server error. Please retry.");
                         }
                     }
                 });

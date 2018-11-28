@@ -1,6 +1,5 @@
 package in.appnow.blurt.fcm;
 
-import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * Created by Sajeev on 06-04-2017.
@@ -39,15 +38,5 @@ public class Config {
     public static final int GENERAL_NOTIFICATION = 103;
 
     public static final int MESSAGE_NOTIFICATION_ID_BIG_IMAGE = 103;
-
-
-    public static void doSubscriptionTopic(String topicName, boolean subscribe) {
-        if (subscribe)
-            FirebaseMessaging.getInstance().subscribeToTopic(topicName);
-        else
-            FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName);
-
-    }
-
 
 }

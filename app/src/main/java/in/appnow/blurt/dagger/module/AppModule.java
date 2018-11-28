@@ -12,8 +12,8 @@ public class AppModule {
 
     private final Context context;
 
-    public AppModule(Application application) {
-        this.context = application.getApplicationContext();
+    public AppModule(Context context) {
+        this.context = context;
     }
 
     @AppScope

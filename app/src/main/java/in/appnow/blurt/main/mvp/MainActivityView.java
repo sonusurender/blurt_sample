@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 
 import java.util.List;
 
@@ -163,7 +162,7 @@ public class MainActivityView extends FrameLayout implements BaseView, AdapterVi
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                ToastUtils.shortToast("Logout Success.");
+                ToastUtils.shortToast(appCompatActivity,"Logout Success.");
                 // appCompatActivity.startActivity(new Intent(appCompatActivity, LoginActivity.class));
                 appCompatActivity.finish();
             }
@@ -223,7 +222,6 @@ public class MainActivityView extends FrameLayout implements BaseView, AdapterVi
                 mToolBarNavigationListenerIsRegistered = false;
             }
         } catch (Exception e) {
-            Crashlytics.logException(e);
         }
 
         // So, one may think "Hmm why not simplify to:

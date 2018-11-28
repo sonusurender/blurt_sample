@@ -13,8 +13,8 @@ import in.appnow.blurt.helper.PreferenceManger;
 public class SharedPreferencesModule {
     private final PreferenceManger preferenceManger;
 
-    public SharedPreferencesModule(Application application) {
-        preferenceManger = new PreferenceManger(application.getSharedPreferences(PreferenceManger.PREF_KEY, Context.MODE_PRIVATE));
+    public SharedPreferencesModule(Context context) {
+        preferenceManger = new PreferenceManger(context.getSharedPreferences(PreferenceManger.PREF_KEY, Context.MODE_PRIVATE));
     }
 
     @Provides

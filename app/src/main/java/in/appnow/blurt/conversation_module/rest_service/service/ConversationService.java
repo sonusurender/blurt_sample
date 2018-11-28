@@ -110,7 +110,7 @@ public class ConversationService {
 
    /* public static void fetchAllMessages(final Context context, int pageNumber, final APICallback apiCallback, final int requestCode) {
 
-        if (!AstroApplication.getInstance().isInternetConnected(false)) {
+        if (!Blurt.getInstance().isInternetConnected(false)) {
             apiCallback.onNoNetwork(requestCode);
             return;
         }

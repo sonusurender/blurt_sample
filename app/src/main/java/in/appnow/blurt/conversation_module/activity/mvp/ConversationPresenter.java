@@ -5,8 +5,6 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +20,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.base.BasePresenter;
 import in.appnow.blurt.conversation_module.rest_service.models.request.FetchMessageRequest;
 import in.appnow.blurt.conversation_module.rest_service.models.request.UpdateMessageRequest;
@@ -112,7 +110,7 @@ public class ConversationPresenter implements BasePresenter {
 
     private Disposable observeSendButtonClick() {
         return view.observeSendButton()
-                .map(isValidate -> !TextUtils.isEmpty(view.getTypedMessage()) && AstroApplication.getInstance().isInternetConnected(true))
+                .map(isValidate -> !TextUtils.isEmpty(view.getTypedMessage()) && Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(true))
                 .subscribe(isValidate -> {
                     if (isValidate) {
                         long timeStamp = System.currentTimeMillis();
@@ -245,7 +243,7 @@ public class ConversationPresenter implements BasePresenter {
                                     //openChatFeedbackScreen();
                                 });
                             } else {
-                                ToastUtils.shortToast(data.getErrorMsg());
+                                ToastUtils.shortToast(model.getAppCompatActivity(),data.getErrorMsg());
 
                             }
                         }
@@ -282,7 +280,6 @@ public class ConversationPresenter implements BasePresenter {
                 mSocket.emit(EVENT_NOTIFICATION, jsonObject);
             } catch (Exception e) {
                 e.printStackTrace();
-                Crashlytics.logException(e);
             }
         }
 
@@ -465,14 +462,13 @@ public class ConversationPresenter implements BasePresenter {
                             break;
                         case "END_CHAT":
                             AsyncTask.execute(() -> abDatabase.conversationDao().deleteChatTable());
-                            ToastUtils.longToast("Chat finished");
+                            ToastUtils.longToast(model.getAppCompatActivity(),"Chat finished");
                             break;
                     }
                 });
 
 
             } catch (Exception e) {
-                Crashlytics.logException(e);
             }
         }
     };
@@ -515,7 +511,6 @@ public class ConversationPresenter implements BasePresenter {
 
                 }
             } catch (Exception e) {
-                Crashlytics.logException(e);
             }
         }
     };

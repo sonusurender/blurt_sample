@@ -62,7 +62,7 @@ public class ChatFeedbackView extends FrameLayout implements BaseView {
 
     public boolean isRatingSelected() {
         if (getChatRating() == 0) {
-            ToastUtils.shortToast("Please select rating.");
+            ToastUtils.shortToast(getContext(),"Please select rating.");
             return false;
         }
         return true;

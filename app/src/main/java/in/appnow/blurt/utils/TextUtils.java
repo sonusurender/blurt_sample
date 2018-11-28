@@ -1,5 +1,6 @@
 package in.appnow.blurt.utils;
 
+import android.content.Context;
 import android.text.InputFilter;
 import android.util.Patterns;
 import android.widget.EditText;
@@ -26,11 +27,11 @@ public class TextUtils {
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
     }
 
-    public static boolean isEmailIdValid(String target) {
+    public static boolean isEmailIdValid(Context context,String target) {
         if (!android.text.TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()) {
             return true;
         }else {
-            ToastUtils.shortToast("Please enter valid email address.");
+            ToastUtils.shortToast(context,"Please enter valid email address.");
             return false;
         }
     }

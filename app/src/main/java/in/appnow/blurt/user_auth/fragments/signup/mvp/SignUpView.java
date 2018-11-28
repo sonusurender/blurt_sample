@@ -128,7 +128,7 @@ public class SignUpView extends FrameLayout implements BaseView {
 
             return true;
         }
-        ToastUtils.shortToast("Please enter your name.");
+        ToastUtils.shortToast(getContext(),"Please enter your name.");
         return false;
     }
 

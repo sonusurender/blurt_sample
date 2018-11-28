@@ -1,33 +1,16 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
 apply plugin: 'com.android.library'
-apply plugin: 'io.fabric'
 apply plugin: 'com.jakewharton.butterknife'//added for library and then R will become R2 for finding Ids in library
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
-
 apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        //applicationId "in.appnow.blurt"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
 
         buildConfigField 'String', 'STAGING_END_POINT', (project.findProperty("STAGING_END_POINT") ?: "")
         buildConfigField 'String', 'PRODUCTION_END_POINT', (project.findProperty("PRODUCTION_END_POINT") ?: "")
@@ -55,16 +38,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-           // shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-        }
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            versionNameSuffix ".debug"
-            resValue "string", "app_version", "${defaultConfig.versionName}${versionNameSuffix}"
-            resValue "string", "app_version_code", "${defaultConfig.versionCode}${versionNameSuffix}"
         }
     }
 }
@@ -79,13 +53,11 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
-    implementation 'com.google.firebase:firebase-messaging:17.1.0'
-
     //Circle Image View
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     //SDP dependency for different size of devices
-    implementation 'com.intuit.sdp:sdp-android:1.0.5'
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
     //Emoji Library
     implementation 'com.vanniktech:emoji-google:0.5.1'
@@ -110,9 +82,6 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
-    // Paging
-    implementation 'android.arch.paging:runtime:1.0.1'
-
     // Test helpers for LiveData
     testImplementation "android.arch.core:core-testing:$rootProject.roomVersion"
 
@@ -132,9 +101,6 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.1.1'
 
-    //dependency to check runtime permission with RxJava
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
-
     //Network Dependencies
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -146,55 +112,13 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.fatboyindustrial.gson-jodatime-serialisers:gson-jodatime-serialisers:1.5.0'
-    implementation 'com.github.florent37:singledateandtimepicker:2.0.1'
-
-    //Lottie animation
-    implementation 'com.airbnb.android:lottie:2.5.4'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin_version"
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
-        transitive = true;
-    }
-    //multidex for above 64k method in app
-    implementation 'com.android.support:multidex:1.0.3'
 
-
+    //Socket
     implementation('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
-   /* compile ('io.socket:engine.io-client:1.0.0') {
-        // excluding org.json which is provided by Android
-        exclude group: 'org.json', module: 'json'
-    }*/
-    //implementation 'com.github.nkzawa:socket.io-client:0.3.0'
 
-
-}
-apply plugin: 'com.google.gms.google-services'
-
-/**
- * method to generate version code
- * @return version code
- */
-private Integer generateVersionCode() {
-    return rootProject.ext.minSdkVersion * 10000000 + rootProject.ext.versionMajor * 10000 + rootProject.ext.versionMinor * 100 + rootProject.ext.versionPatch
-}
-
-/**
- * method to generate version name
- * @return version name
- */
-private String generateVersionName() {
-    String versionName = "${rootProject.ext.versionMajor}.${rootProject.ext.versionMinor}.${rootProject.ext.versionPatch}"
-    if (rootProject.ext.versionClassifier == null) {
-        if (rootProject.ext.isSnapshot) {
-            rootProject.ext.versionClassifier = "SNAPSHOT"
-        }
-    }
-
-    if (rootProject.ext.versionClassifier != null) {
-        versionName += "-" + rootProject.ext.versionClassifier
-    }
-    return versionName;
 }

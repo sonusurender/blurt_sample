@@ -1,21 +1,16 @@
 package in.appnow.blurt.conversation_module.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import javax.inject.Inject;
 
-import in.appnow.blurt.R;
 import in.appnow.blurt.R2;
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.conversation_module.activity.dagger.ConversationModule;
 import in.appnow.blurt.conversation_module.activity.dagger.DaggerConversationComponent;
 import in.appnow.blurt.conversation_module.activity.mvp.ConversationActivityView;
@@ -25,7 +20,6 @@ import in.appnow.blurt.conversation_module.utils.ConversationUtils;
 import in.appnow.blurt.dialog.DialogHelperClass;
 import in.appnow.blurt.fcm.Config;
 import in.appnow.blurt.fcm.NotificationUtils;
-import in.appnow.blurt.utils.Logger;
 
 
 /**
@@ -56,7 +50,7 @@ public class ConversationActivity extends AppCompatActivity implements OnChatToo
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerConversationComponent.builder()
-                .appComponent(AstroApplication.get(this).component())
+                .appComponent(Blurt.getInstance(this).component())
                 .conversationModule(new ConversationModule(this))
                 .build().inject(this);
         setContentView(view);
@@ -82,7 +76,7 @@ public class ConversationActivity extends AppCompatActivity implements OnChatToo
     protected void onResume() {
         super.onResume();
         resetUnreadMessageCounter();
-        NotificationUtils.clearSingleNotification(Config.CHAT_MESSAGE_NOTIFICATION_ID);
+        NotificationUtils.clearSingleNotification(this,Config.CHAT_MESSAGE_NOTIFICATION_ID);
     }
 
     private void resetUnreadMessageCounter() {
@@ -114,7 +108,7 @@ public class ConversationActivity extends AppCompatActivity implements OnChatToo
                 //  fetchAllMessages();
                 break;
             case R2.id.action_exit:
-                if (AstroApplication.getInstance().isInternetConnected(true)) {
+                if (Blurt.getInstance(this).isInternetConnected(true)) {
                     DialogHelperClass.showMessageOKCancel(ConversationActivity.this, "Are you sure you want to exit from chat.", "Ok", "Cancel", (dialogInterface, i) -> presenter.onEndChat(), null);
                 }
                 break;

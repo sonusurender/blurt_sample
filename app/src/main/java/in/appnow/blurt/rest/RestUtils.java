@@ -30,10 +30,10 @@ public class RestUtils {
             Bundle bundle = ai.metaData;
             return String.valueOf(bundle.getInt("blurt_api_key"));
         } catch (PackageManager.NameNotFoundException e) {
-            ToastUtils.shortToast("Failed to load meta-data, NameNotFound: " + e.getMessage());
+            ToastUtils.shortToast(context,"Failed to load meta-data, NameNotFound: " + e.getMessage());
             return "";
         } catch (NullPointerException e) {
-            ToastUtils.shortToast("Failed to load meta-data, NullPointer:" + e.getMessage());
+            ToastUtils.shortToast(context,"Failed to load meta-data, NullPointer:" + e.getMessage());
             return "";
         }
     }

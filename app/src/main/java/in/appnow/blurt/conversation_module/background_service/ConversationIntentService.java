@@ -1,32 +1,23 @@
 package in.appnow.blurt.conversation_module.background_service;
 
-import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.conversation_module.rest_service.models.request.UpdateMessageRequest;
-import in.appnow.blurt.conversation_module.rest_service.models.request.UserStatusRequest;
-import in.appnow.blurt.conversation_module.rest_service.models.response.ConversationResponse;
-import in.appnow.blurt.conversation_module.rest_service.models.response.HandlerStatusResponse;
 import in.appnow.blurt.conversation_module.rest_service.service.ConversationService;
 import in.appnow.blurt.conversation_module.utils.ConversationUtils;
 import in.appnow.blurt.dagger.component.DaggerMyServiceComponent;
 import in.appnow.blurt.dao.ABDatabase;
-import in.appnow.blurt.fcm.Config;
 import in.appnow.blurt.helper.PreferenceManger;
 import in.appnow.blurt.interfaces.APICallback;
 import in.appnow.blurt.rest.APIInterface;
-import in.appnow.blurt.rest.request.BaseRequestModel;
-import in.appnow.blurt.rest.request.TypingStatusRequest;
 import in.appnow.blurt.rest.response.BaseResponseModel;
 import in.appnow.blurt.utils.Logger;
 import retrofit2.Call;
@@ -61,7 +52,7 @@ public class ConversationIntentService extends IntentService implements APICallb
     public void onCreate() {
         super.onCreate();
         DaggerMyServiceComponent.builder()
-                .appComponent(AstroApplication.get(this).component())
+                .appComponent(Blurt.getInstance(this).component())
                 .build()
                 .inject(this);
     }

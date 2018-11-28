@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.base.BaseActivity;
 import in.appnow.blurt.chat_feedback.dagger.ChatFeedbackModule;
 import in.appnow.blurt.chat_feedback.dagger.DaggerChatFeedbackComponent;
@@ -42,7 +42,7 @@ public class ChatFeedbackActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerChatFeedbackComponent.builder()
-                .appComponent(AstroApplication.get(this).component())
+                .appComponent(Blurt.getInstance(this).component())
                 .chatFeedbackModule(new ChatFeedbackModule(this))
                 .build().inject(this);
         setContentView(view);

@@ -1,6 +1,6 @@
 package in.appnow.blurt.user_auth.fragments.login.mvp;
 
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.base.BasePresenter;
 import in.appnow.blurt.rest.CallbackWrapper;
 import in.appnow.blurt.rest.request.UserAvailabilityRequest;
@@ -36,7 +36,7 @@ public class LoginPresenter implements BasePresenter {
     private Disposable observeContinueButtonClick() {
         return view.observeContinueButtonClick()
                 .doOnNext(__ -> model.showProgressDialog())
-                .map(isValidated -> TextUtils.isEmailIdValid(view.getEmailId()) && AstroApplication.getInstance().isInternetConnected(true))
+                .map(isValidated -> TextUtils.isEmailIdValid(model.getAppCompatActivity(),view.getEmailId()) && Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(true))
                 .observeOn(Schedulers.io())
                 .switchMap(isValidated -> {
                     if (isValidated) {
@@ -55,12 +55,12 @@ public class LoginPresenter implements BasePresenter {
                     @Override
                     protected void onSuccess(BaseResponseModel baseResponseModel) {
                         if (baseResponseModel != null) {
-                            ToastUtils.shortToast(baseResponseModel.getErrorMsg());
+                            ToastUtils.shortToast(model.getAppCompatActivity(),baseResponseModel.getErrorMsg());
                             if (!baseResponseModel.isErrorStatus()) {
                                 model.replaceOTPFragment(view.getEmailId());
                             }
                         } else {
-                            ToastUtils.shortToast("Server error. Please retry.");
+                            ToastUtils.shortToast(model.getAppCompatActivity(),"Server error. Please retry.");
                         }
                     }
                 });

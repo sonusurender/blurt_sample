@@ -1,6 +1,6 @@
 package in.appnow.blurt.main.mvp;
 
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.base.BasePresenter;
 import in.appnow.blurt.conversation_module.activity.mvp.ConversationPresenter;
 import in.appnow.blurt.dao.ABDatabase;
@@ -55,12 +55,12 @@ public class MainActivityPresenter implements BasePresenter {
                     protected void onSuccess(StartChatResponse data) {
                         if (data != null) {
                             if (isNotify) {
-                                ToastUtils.shortToast(data.getErrorMsg());
+                                ToastUtils.shortToast(model.getAppCompatActivity(),data.getErrorMsg());
                             } else {
                                 if (!data.isErrorStatus()) {
 
                                 } else {
-                                    ToastUtils.shortToast(data.getErrorMsg());
+                                    ToastUtils.shortToast(model.getAppCompatActivity(),data.getErrorMsg());
                                 }
                             }
                         }
@@ -70,7 +70,7 @@ public class MainActivityPresenter implements BasePresenter {
 
     private void showNotifyMeDialog(String message) {
         DialogHelperClass.showMessageOKCancel(model.getAppCompatActivity(), message, "Yes", "No", (dialogInterface, i) -> {
-            if (AstroApplication.getInstance().isInternetConnected(true)) {
+            if (Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(true)) {
                 startChat(true);
             }
 

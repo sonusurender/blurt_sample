@@ -11,7 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.appnow.blurt.R;
 import in.appnow.blurt.R2;
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.main.WebViewFragment;
 import in.appnow.blurt.main.common_activity.dagger.CommonActivityComponent;
 import in.appnow.blurt.main.common_activity.dagger.DaggerCommonActivityComponent;
@@ -41,7 +41,7 @@ public class CommonActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         component = DaggerCommonActivityComponent.builder()
-                .appComponent(AstroApplication.get(this).component())
+                .appComponent(Blurt.getInstance(this).component())
                 // .commonActivityModule(new CommonActivityModule(this))
                 .build();
         component.inject(this);

@@ -1,7 +1,7 @@
 package in.appnow.blurt.chat_feedback.mvp;
 
 
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.base.BasePresenter;
 import in.appnow.blurt.helper.PreferenceManger;
 import in.appnow.blurt.rest.CallbackWrapper;
@@ -42,7 +42,7 @@ public class ChatFeedbackPresenter implements BasePresenter {
     private Disposable observeDoneButtonClick() {
         return view.observeSubmitButton()
                 .doOnNext(__ -> model.showProgress())
-                .map(isValidate -> view.isRatingSelected() && AstroApplication.getInstance().isInternetConnected(true))
+                .map(isValidate -> view.isRatingSelected() && Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(true))
                 .observeOn(Schedulers.io())
                 .switchMap(isValidate -> {
                     if (isValidate) {
@@ -65,7 +65,7 @@ public class ChatFeedbackPresenter implements BasePresenter {
                                 preferenceManger.putPendingFeedback(null);
                                 model.closeActivity();
                             }
-                            ToastUtils.shortToast(data.getErrorMsg());
+                            ToastUtils.shortToast(model.getAppCompatActivity(),data.getErrorMsg());
                         }
                     }
                 });

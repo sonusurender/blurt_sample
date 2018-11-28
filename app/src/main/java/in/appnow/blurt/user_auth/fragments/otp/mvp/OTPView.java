@@ -100,7 +100,7 @@ public class OTPView extends FrameLayout implements BaseView {
         if (!android.text.TextUtils.isEmpty(getOTP()) && getOTP().length() == 4) {
             return true;
         }
-        ToastUtils.shortToast("Please enter valid OTP.");
+        ToastUtils.shortToast(getContext(),"Please enter valid OTP.");
         return false;
     }
 

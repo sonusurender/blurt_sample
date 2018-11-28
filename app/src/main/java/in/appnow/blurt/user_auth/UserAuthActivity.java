@@ -10,16 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import javax.inject.Inject;
 
-import dagger.multibindings.IntKey;
 import in.appnow.blurt.R;
-import in.appnow.blurt.app.AstroApplication;
-import in.appnow.blurt.base.BaseActivity;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.fcm.Config;
 import in.appnow.blurt.fcm.NotificationUtils;
-import in.appnow.blurt.main.dagger.DaggerMainActivityComponent;
-import in.appnow.blurt.main.dagger.MainActivityComponent;
-import in.appnow.blurt.main.dagger.MainActivityModule;
-import in.appnow.blurt.rest.RestUtils;
 import in.appnow.blurt.user_auth.dagger.DaggerUserAuthComponent;
 import in.appnow.blurt.user_auth.dagger.UserAuthComponent;
 import in.appnow.blurt.user_auth.dagger.UserAuthModule;
@@ -27,7 +21,6 @@ import in.appnow.blurt.user_auth.fragments.login.LoginFragment;
 import in.appnow.blurt.user_auth.mvp.UserAuthPresenter;
 import in.appnow.blurt.user_auth.mvp.UserAuthView;
 import in.appnow.blurt.utils.FragmentUtils;
-import in.appnow.blurt.utils.Logger;
 
 /**
  * Created by sonu on 18:14, 20/09/18
@@ -51,7 +44,7 @@ public class UserAuthActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         component = DaggerUserAuthComponent.builder()
-                .appComponent(AstroApplication.get(this).component())
+                .appComponent(Blurt.getInstance(this).component())
                 .userAuthModule(new UserAuthModule(this))
                 .build();
         component.inject(this);
@@ -100,6 +93,6 @@ public class UserAuthActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        NotificationUtils.clearSingleNotification(Config.END_CHAT_NOTIFICATION_ID);
+        NotificationUtils.clearSingleNotification(this,Config.END_CHAT_NOTIFICATION_ID);
     }
 }

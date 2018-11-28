@@ -3,24 +3,20 @@ package in.appnow.blurt.user_auth.fragments.signup.mvp;
 import android.support.annotation.Nullable;
 
 import in.appnow.blurt.BuildConfig;
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.base.BasePresenter;
-import in.appnow.blurt.conversation_module.activity.ConversationActivity;
 import in.appnow.blurt.helper.PreferenceManger;
 import in.appnow.blurt.rest.CallbackWrapper;
 import in.appnow.blurt.rest.RestUtils;
 import in.appnow.blurt.rest.request.BaseRequestModel;
 import in.appnow.blurt.rest.request.CreateAccountRequest;
 import in.appnow.blurt.rest.request.FCMRequestModel;
-import in.appnow.blurt.rest.request.UserAvailabilityRequest;
 import in.appnow.blurt.rest.response.BaseResponseModel;
 import in.appnow.blurt.rest.response.LoginResponseModel;
 import in.appnow.blurt.rest.response.StartChatResponse;
 import in.appnow.blurt.rest.response.UserProfile;
-import in.appnow.blurt.user_auth.fragments.otp.mvp.OTPView;
 import in.appnow.blurt.utils.Constants;
 import in.appnow.blurt.utils.LocaleUtils;
-import in.appnow.blurt.utils.Logger;
 import in.appnow.blurt.utils.TextUtils;
 import in.appnow.blurt.utils.ToastUtils;
 import io.reactivex.Observable;
@@ -61,7 +57,7 @@ public class SignUpPresenter implements BasePresenter {
     private Disposable observeContinueButtonClick() {
         return view.observeContinueButtonClick()
                 .doOnNext(__ -> model.showProgressDialog())
-                .map(isValidated -> TextUtils.isEmailIdValid(view.getEmailId()) && view.isUserNameValid() && AstroApplication.getInstance().isInternetConnected(true))
+                .map(isValidated -> TextUtils.isEmailIdValid(model.getAppCompatActivity(),view.getEmailId()) && view.isUserNameValid() && Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(true))
                 .observeOn(Schedulers.io())
                 .switchMap(isValidated -> {
                     if (isValidated) {
@@ -70,7 +66,7 @@ public class SignUpPresenter implements BasePresenter {
                         request.setName(view.getUserName());
                         request.setDeviceType(Constants.DEVICE_TYPE);
                         request.setAppVersion(BuildConfig.VERSION_NAME);
-                        request.setLicenseKey(RestUtils.getLicenseKey(AstroApplication.getInstance()));
+                        request.setLicenseKey(RestUtils.getLicenseKey(model.getAppCompatActivity()));
                         request.setLocale(LocaleUtils.prepareLocaleForServer(model.getAppCompatActivity()));
                         return model.createAccount(request);
                     } else {
@@ -85,7 +81,7 @@ public class SignUpPresenter implements BasePresenter {
                     @Override
                     protected void onSuccess(LoginResponseModel loginResponseModel) {
                         if (loginResponseModel != null) {
-                            ToastUtils.shortToast(loginResponseModel.getErrorMsg());
+                            ToastUtils.shortToast(model.getAppCompatActivity(),loginResponseModel.getErrorMsg());
                             if (!loginResponseModel.isErrorStatus()) {
                                 if (loginResponseModel.getUserProfile().getUserStatus().equalsIgnoreCase(UserProfile.USER_FOUND)) {
                                     preferenceManger.putUserDetails(loginResponseModel.getUserProfile());
@@ -94,7 +90,7 @@ public class SignUpPresenter implements BasePresenter {
                                 }
                             }
                         } else {
-                            ToastUtils.shortToast("Server error. Please retry.");
+                            ToastUtils.shortToast(model.getAppCompatActivity(),"Server error. Please retry.");
                         }
                     }
                 });
@@ -105,7 +101,7 @@ public class SignUpPresenter implements BasePresenter {
     private Disposable observeStartChatButtonClick() {
         return view.observeStartChatButtonClick()
                 .doOnNext(__ -> model.showProgressDialog())
-                .map(isValidated -> AstroApplication.getInstance().isInternetConnected(true))
+                .map(isValidated -> Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(true))
                 .observeOn(Schedulers.io())
                 .switchMap(isValidated -> {
                     if (isValidated) {
@@ -127,7 +123,7 @@ public class SignUpPresenter implements BasePresenter {
                                 model.openChatActivity(response.getChatSessionId(), response.isExistingChat());
                             }
                         } else {
-                            ToastUtils.shortToast("Server error. Please retry.");
+                            ToastUtils.shortToast(model.getAppCompatActivity(),"Server error. Please retry.");
                         }
                     }
                 });
@@ -136,7 +132,7 @@ public class SignUpPresenter implements BasePresenter {
     }
 
     public void doStartChat() {
-        if (AstroApplication.getInstance().isInternetConnected(true)) {
+        if (Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(true)) {
             disposable.add(observeStartChat());
         }
     }
@@ -158,7 +154,7 @@ public class SignUpPresenter implements BasePresenter {
                                 model.openChatActivity(response.getChatSessionId(), response.isExistingChat());
                             }
                         } else {
-                            ToastUtils.shortToast("Server error. Please retry.");
+                            ToastUtils.shortToast(model.getAppCompatActivity(),"Server error. Please retry.");
                         }
                     }
                 });
@@ -167,7 +163,7 @@ public class SignUpPresenter implements BasePresenter {
     }
 
     private void updateFCMToken() {
-        if (preferenceManger.getUserDetails() != null && !preferenceManger.getBooleanValue(PreferenceManger.FCM_UPDATED) && AstroApplication.getInstance().isInternetConnected(false)) {
+        if (preferenceManger.getUserDetails() != null && !preferenceManger.getBooleanValue(PreferenceManger.FCM_UPDATED) && Blurt.getInstance(model.getAppCompatActivity()).isInternetConnected(false)) {
             disposable.add(updateFCMTokenTask());
         }
     }

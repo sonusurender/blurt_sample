@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.List;
 
 import in.appnow.blurt.R;
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.rest.RestUtils;
 import in.appnow.blurt.utils.Logger;
 
@@ -202,8 +202,8 @@ public class NotificationUtils {
     }
 
     // Clears notification tray messages
-    public static void clearSingleNotification(int notificationId) {
-        NotificationManager notificationManager = (NotificationManager) AstroApplication.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
+    public static void clearSingleNotification(Context context,int notificationId) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (notificationManager != null)
             notificationManager.cancel(notificationId);

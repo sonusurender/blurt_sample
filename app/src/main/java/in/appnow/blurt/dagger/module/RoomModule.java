@@ -3,6 +3,7 @@ package in.appnow.blurt.dagger.module;
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,10 +22,10 @@ public class RoomModule {
 
     private final ABDatabase abDatabase;
 
-    public RoomModule(Application application) {
-        this.abDatabase = Room.databaseBuilder(application,
+    public RoomModule(Context context) {
+        this.abDatabase = Room.databaseBuilder(context,
                 ABDatabase.class,
-                "astro_buddy.db")
+                "blurt.db")
                 .fallbackToDestructiveMigration()
                 .build();
     }

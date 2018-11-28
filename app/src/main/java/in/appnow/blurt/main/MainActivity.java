@@ -13,14 +13,8 @@ import android.view.MenuItem;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
-import in.appnow.blurt.app.AstroApplication;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.base.BaseActivity;
 import in.appnow.blurt.fcm.Config;
 import in.appnow.blurt.fcm.NotificationUtils;
@@ -30,15 +24,8 @@ import in.appnow.blurt.main.dagger.MainActivityComponent;
 import in.appnow.blurt.main.dagger.MainActivityModule;
 import in.appnow.blurt.main.mvp.MainActivityPresenter;
 import in.appnow.blurt.main.mvp.MainActivityView;
-import in.appnow.blurt.rest.RestUtils;
-import in.appnow.blurt.rest.SslUtils;
 import in.appnow.blurt.user_auth.UserAuthActivity;
 import in.appnow.blurt.utils.FragmentUtils;
-import in.appnow.blurt.utils.Logger;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-import okhttp3.OkHttpClient;
 
 
 public class MainActivity extends BaseActivity implements OnToolbarListener {
@@ -62,7 +49,7 @@ public class MainActivity extends BaseActivity implements OnToolbarListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         component = DaggerMainActivityComponent.builder()
-                .appComponent(AstroApplication.get(this).component())
+                .appComponent(Blurt.getInstance(this).component())
                 .mainActivityModule(new MainActivityModule(this))
                 .build();
         component.inject(this);
@@ -187,7 +174,7 @@ public class MainActivity extends BaseActivity implements OnToolbarListener {
             switch (notificationType) {
                 case Config.PICK_REQUEST_PUSH:
                 case Config.CHAT_MESSAGE_PUSH:
-                    if (AstroApplication.getInstance().isInternetConnected(true))
+                    if (Blurt.getInstance(this).isInternetConnected(true))
                         presenter.startChat(false);
                     break;
                 case Config.TRANSACTION_REPORT_PUSH:
@@ -204,7 +191,7 @@ public class MainActivity extends BaseActivity implements OnToolbarListener {
     @Override
     protected void onResume() {
         super.onResume();
-        NotificationUtils.clearSingleNotification(Config.GENERAL_NOTIFICATION);
+        NotificationUtils.clearSingleNotification(this,Config.GENERAL_NOTIFICATION);
     }
 
 }

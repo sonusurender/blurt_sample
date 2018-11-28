@@ -15,7 +15,7 @@ public class DeviceUtils {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             return true;
         }
-        ToastUtils.longToast(R.string.camera_not_supported);
+        ToastUtils.longToast(context,R.string.camera_not_supported);
         return false;
     }
 

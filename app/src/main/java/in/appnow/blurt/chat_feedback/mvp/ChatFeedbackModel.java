@@ -24,9 +24,13 @@ public class ChatFeedbackModel {
         this.apiInterface = apiInterface;
     }
 
+    public AppCompatActivity getAppCompatActivity() {
+        return appCompatActivity;
+    }
+
     /* public int getTopicsDebited() {
-         return appCompatActivity.getIntent().getIntExtra(ChatFeedbackActivity.ARG_TOPIC, 0);
-     }*/
+             return appCompatActivity.getIntent().getIntExtra(ChatFeedbackActivity.ARG_TOPIC, 0);
+         }*/
     public Observable<BaseResponseModel> sendChatFeedback(ChatFeedbackRequest request) {
         return apiInterface.submitChatFeedback(request);
     }

@@ -12,10 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.vanniktech.emoji.EmojiEditText;
@@ -28,17 +26,14 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-
 import in.appnow.blurt.R;
 import in.appnow.blurt.R2;
 import in.appnow.blurt.base.BaseView;
-import in.appnow.blurt.conversation_module.activity.ConversationActivity;
 import in.appnow.blurt.conversation_module.adapters.ConversationMessageAdapter;
 import in.appnow.blurt.conversation_module.rest_service.models.response.ConversationResponse;
 import in.appnow.blurt.conversation_module.utils.ConversationUtils;
 import in.appnow.blurt.helper.PreferenceManger;
 import in.appnow.blurt.utils.ImageUtils;
-import in.appnow.blurt.utils.Logger;
 import in.appnow.blurt.utils.ToastUtils;
 import io.reactivex.Observable;
 
@@ -168,7 +163,7 @@ public class ConversationActivityView extends FrameLayout implements BaseView {
     }
 
     public void setMessage(String message) {
-        ToastUtils.longToast(message);
+        ToastUtils.longToast(appCompatActivity,message);
     }
 
     private void setUpEmojiconPopup() {
