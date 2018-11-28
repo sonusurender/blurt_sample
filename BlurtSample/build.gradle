@@ -9,7 +9,6 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
 
 
     }
@@ -34,8 +33,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     implementation project(':app')
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
-    //multidex for above 64k method in app
-    implementation 'com.android.support:multidex:1.0.3'
+
 }
 apply plugin: 'com.google.gms.google-services'
 
