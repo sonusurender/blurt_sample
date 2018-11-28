@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import dagger.Module;
 import dagger.Provides;
 import in.appnow.blurt.BuildConfig;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.dagger.scope.AppScope;
 import in.appnow.blurt.helper.PreferenceManger;
 import in.appnow.blurt.rest.APIInterface;
@@ -71,7 +72,7 @@ public class NetworkModule {
     @Provides
     public HttpLoggingInterceptor httpLoggingInterceptor() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
+        interceptor.setLevel(Blurt.getDebug()? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
         return interceptor;
     }
 

@@ -3,6 +3,7 @@ package in.appnow.blurt.utils;
 import android.util.Log;
 
 import in.appnow.blurt.BuildConfig;
+import in.appnow.blurt.app.Blurt;
 
 
 /**
@@ -14,12 +15,12 @@ import in.appnow.blurt.BuildConfig;
 public class Logger {
 
     public static void ErrorLog(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (Blurt.getDebug()) {
             Log.e(tag, message);
         }
     }
     public static void DebugLog(String tag, String message) {
-        if (BuildConfig.DEBUG) {
+        if (Blurt.getDebug()) {
             Log.d(tag, message);
         }
     }

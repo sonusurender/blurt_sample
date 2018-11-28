@@ -125,7 +125,6 @@ public class SignUpView extends FrameLayout implements BaseView {
 
     public boolean isUserNameValid() {
         if (!TextUtils.isEmpty(getUserName())) {
-
             return true;
         }
         ToastUtils.shortToast(getContext(),"Please enter your name.");

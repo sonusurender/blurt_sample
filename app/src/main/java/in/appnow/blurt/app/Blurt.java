@@ -30,6 +30,7 @@ public class Blurt {
     private static Blurt instance;
     private static AppComponent appComponent;
     private Context context;
+    private static boolean isDebug = false;
 
     private Blurt(Context context) {
         this.context = context;
@@ -88,8 +89,15 @@ public class Blurt {
                 .build();
     }
 
+    public static void enableDebug(boolean isDebug) {
+        Blurt.isDebug = isDebug;
+    }
 
-/*
+    public static boolean getDebug() {
+        return isDebug;
+    }
+
+    /*
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createNotificationChannel() {
         NotificationManager mNotificationManager =
