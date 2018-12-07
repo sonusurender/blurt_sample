@@ -25,6 +25,7 @@ import java.util.List;
 import in.appnow.blurt.R;
 import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.rest.RestUtils;
+import in.appnow.blurt.utils.AppUtils;
 import in.appnow.blurt.utils.Logger;
 
 
@@ -109,7 +110,7 @@ public class NotificationUtils {
                 .setSound(alarmSound)
                 .setWhen(System.currentTimeMillis())
                 .setStyle(bigTextStyle)
-                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), AppUtils.getLauncherIcon(mContext)))
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -136,7 +137,7 @@ public class NotificationUtils {
                 .setStyle(bigPictureStyle)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(icon)
-                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), AppUtils.getLauncherIcon(mContext)))
                 .setContentText(message)
                 .build();
 

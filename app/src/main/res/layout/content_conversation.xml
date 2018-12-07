@@ -8,20 +8,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_conversation">
 
-    <ImageView
-        android:id="@+id/ad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/a_2" />
-
     <TextView
         android:id="@+id/chat_queue_sequence_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ad"
         android:background="@color/gunmetal"
         android:gravity="center"
         android:padding="10dp"

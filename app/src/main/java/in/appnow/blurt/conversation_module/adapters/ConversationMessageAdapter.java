@@ -32,21 +32,20 @@ public class ConversationMessageAdapter extends RecyclerView.Adapter<RecyclerVie
     private Context mContext;
     private List<ConversationResponse> conversationModelArrayList = new ArrayList<>(0);
 
-    private SparseBooleanArray mSelectedItemsIds;
 
     private PreferenceManger preferenceManger;
 
     public ConversationMessageAdapter(Context mContext) {
         this.mContext = mContext;
-        mSelectedItemsIds = new SparseBooleanArray();
     }
 
     public void setPreferenceManger(PreferenceManger preferenceManger) {
         this.preferenceManger = preferenceManger;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView;
         if (viewType == TYPE_SELF) {
             itemView = LayoutInflater.from(parent.getContext())

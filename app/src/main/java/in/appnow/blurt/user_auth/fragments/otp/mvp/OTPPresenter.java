@@ -10,6 +10,7 @@ import in.appnow.blurt.rest.request.ValidateUserRequest;
 import in.appnow.blurt.rest.response.BaseResponseModel;
 import in.appnow.blurt.rest.response.LoginResponseModel;
 import in.appnow.blurt.rest.response.UserProfile;
+import in.appnow.blurt.utils.AppUtils;
 import in.appnow.blurt.utils.TextUtils;
 import in.appnow.blurt.utils.ToastUtils;
 import io.reactivex.Observable;
@@ -118,7 +119,7 @@ public class OTPPresenter implements BasePresenter {
                         ValidateUserRequest request = new ValidateUserRequest();
                         request.setEmailId(emailId);
                         request.setOtp(view.getOTP());
-                        request.setLicenseKey(RestUtils.getLicenseKey(model.getAppCompatActivity()));
+                        request.setLicenseKey(AppUtils.getLicenseKey(model.getAppCompatActivity()));
                         return model.verifyOTP(request);
                     } else {
                         LoginResponseModel responseModel = new LoginResponseModel();

@@ -7,16 +7,24 @@ import com.google.gson.annotations.SerializedName;
  * Copyright (c) 2018 . All rights reserved.
  */
 public class ChatFeedbackRequest extends BaseRequestModel {
-    @SerializedName("chat_session_id")
-    private String chatSessionId;
-    @SerializedName("fdbk_rating")
+    @SerializedName("chat_id")
+    private String chatId;
+    @SerializedName("rating")
     private int rating;
-    @SerializedName("fdbk_comment")
-    private String comment;
 
-    public ChatFeedbackRequest(String chatSessionId, int rating, String comment) {
-        this.chatSessionId = chatSessionId;
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
         this.rating = rating;
-        this.comment = comment;
     }
 }

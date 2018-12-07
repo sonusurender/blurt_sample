@@ -102,7 +102,7 @@ public class SignUpView extends FrameLayout implements BaseView {
             welcomeLayout.setVisibility(View.VISIBLE);
             signUpLayout.setVisibility(View.GONE);
             if (userProfile != null) {
-                signUpUserName.setText("Hi " + userProfile.getName());
+                signUpUserName.setText("Hi , " + userProfile.getName());
             }
         }
     }

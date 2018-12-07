@@ -34,7 +34,6 @@ public class ChatFeedbackPresenter implements BasePresenter {
 
     @Override
     public void onCreate() {
-        view.updateMessageLabel(model.getMessage());
         disposable.add(observeDoneButtonClick());
     }
 
@@ -46,7 +45,9 @@ public class ChatFeedbackPresenter implements BasePresenter {
                 .observeOn(Schedulers.io())
                 .switchMap(isValidate -> {
                     if (isValidate) {
-                        ChatFeedbackRequest request = new ChatFeedbackRequest(model.getSessionId(), (int) view.getChatRating(), view.getChatFeedback());
+                        ChatFeedbackRequest request = new ChatFeedbackRequest();
+                        request.setChatId(model.getSessionId());
+                        request.setRating((int) view.getChatRating());
                         request.setUserId(preferenceManger.getUserDetails().getUserId());
                         return model.sendChatFeedback(request);
                     } else {
@@ -57,15 +58,16 @@ public class ChatFeedbackPresenter implements BasePresenter {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnEach(__ -> model.hideProgress())
-                .subscribeWith(new CallbackWrapper<BaseResponseModel>(view,1) {
+                .subscribeWith(new CallbackWrapper<BaseResponseModel>(view, 1) {
                     @Override
                     protected void onSuccess(BaseResponseModel data) {
                         if (data != null) {
                             if (!data.isErrorStatus()) {
-                                preferenceManger.putPendingFeedback(null);
                                 model.closeActivity();
+                                ToastUtils.shortToast(model.getAppCompatActivity(), "Your feedback has been submitted successfully.");
+                            } else {
+                                ToastUtils.shortToast(model.getAppCompatActivity(), data.getErrorMsg());
                             }
-                            ToastUtils.shortToast(model.getAppCompatActivity(),data.getErrorMsg());
                         }
                     }
                 });

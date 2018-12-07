@@ -1,7 +1,12 @@
 package in.appnow.blurt.app;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 
 import com.vanniktech.emoji.EmojiManager;
@@ -17,7 +22,10 @@ import in.appnow.blurt.dao.ABDatabase;
 import in.appnow.blurt.helper.PreferenceManger;
 import in.appnow.blurt.network.CheckInternetConnection;
 import in.appnow.blurt.rest.RestUtils;
+import in.appnow.blurt.utils.AppUtils;
 import in.appnow.blurt.utils.ToastUtils;
+
+import static in.appnow.blurt.fcm.NotificationUtils.CHAT_UPDATES_CHANNEL;
 
 /**
  * Created by Surender Kumar on 28/03/18.
@@ -51,7 +59,10 @@ public class Blurt {
         // This line needs to be executed before any usage of EmojiTextView, EmojiEditText or EmojiButton.
         EmojiManager.install(new GoogleEmojiProvider());
         initAppComponent(context);
-        RestUtils.getLicenseKey(context);
+        AppUtils.getLicenseKey(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel(context);
+        }
         return instance;
     }
 
@@ -97,29 +108,36 @@ public class Blurt {
         return isDebug;
     }
 
-    /*
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void createNotificationChannel() {
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-// The user-visible name of the channel.
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void createNotificationChannel(Context context) {
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // The user-visible name of the channel.
         CharSequence name = "Chat Updates";
-// The user-visible description of the channel.
+        // The user-visible description of the channel.
         String description = "This channel is use to send you chat updates regarding this app.";
         int importance = NotificationManager.IMPORTANCE_HIGH;
         NotificationChannel mChannel = new NotificationChannel(CHAT_UPDATES_CHANNEL, name, importance);
-// Configure the notification channel.
+        // Configure the notification channel.
         mChannel.setDescription(description);
         mChannel.enableLights(true);
-// Sets the notification light color for notifications posted to this
-// channel, if the device supports this feature.
+        // Sets the notification light color for notifications posted to this
+        // channel, if the device supports this feature.
         mChannel.setLightColor(Color.RED);
         mChannel.enableVibration(true);
         //mChannel.setShowBadge(false);
         mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-        mNotificationManager.createNotificationChannel(mChannel);
+        if (mNotificationManager != null) {
+            mNotificationManager.createNotificationChannel(mChannel);
+        }
     }
-*/
+
+    public static void logoutUser(Context context) {
+        Blurt.getInstance(context).getPreferenceManager().logoutUser();
+        Blurt.getInstance(context).getDatabase().conversationDao().deleteChatTable();
+    }
+
 
 }

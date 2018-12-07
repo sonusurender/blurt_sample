@@ -2,8 +2,11 @@ package in.appnow.blurt.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Telephony;
 import android.support.v7.app.AppCompatActivity;
 
@@ -62,4 +65,61 @@ public class AppUtils {
         }
         ((AppCompatActivity) context).finish();
     }
+
+    public static String getLicenseKey(Context context) {
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            return bundle.getString("com.blurt.application.key");
+        } catch (PackageManager.NameNotFoundException e) {
+            ToastUtils.shortToast(context, "Failed to load meta-data, NameNotFound: " + e.getMessage());
+            return "";
+        } catch (NullPointerException e) {
+            ToastUtils.shortToast(context, "Failed to load meta-data, NullPointer:" + e.getMessage());
+            return "";
+        }
+    }
+
+    public static String getWelcomeMessage(Context context) {
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            return bundle.getString("com.blurt.welcome.message");
+        } catch (PackageManager.NameNotFoundException e) {
+            ToastUtils.shortToast(context, "Failed to load meta-data, NameNotFound: " + e.getMessage());
+            return "";
+        } catch (NullPointerException e) {
+            ToastUtils.shortToast(context, "Failed to load meta-data, NullPointer:" + e.getMessage());
+            return "";
+        }
+    }
+
+    public static Integer getMetaDataValueForResources(Context context, String metaDataName) {
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            if (ai.metaData != null) {
+                return bundle.getInt(metaDataName);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            ToastUtils.shortToast(context, "Failed to load meta-data, NameNotFound: " + e.getMessage());
+            return getLauncherIcon(context);
+        } catch (NullPointerException e) {
+            ToastUtils.shortToast(context, "Failed to load meta-data, NullPointer:" + e.getMessage());
+            return getLauncherIcon(context);
+        }
+        return getLauncherIcon(context);
+    }
+
+    public static int getLauncherIcon(Context context) {
+        try {
+            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            return ai.icon;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
 }

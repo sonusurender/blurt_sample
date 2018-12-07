@@ -19,8 +19,6 @@ import in.appnow.blurt.conversation_module.utils.ConversationUtils;
 import in.appnow.blurt.dao.viewmodel.ConversationViewModel;
 import in.appnow.blurt.dialog.ProgressDialogFragment;
 import in.appnow.blurt.rest.APIInterface;
-import in.appnow.blurt.rest.request.EndChatRequest;
-import in.appnow.blurt.rest.request.TypingStatusRequest;
 import in.appnow.blurt.rest.response.BaseResponseModel;
 import in.appnow.blurt.rest.response.UpdateSocketIdRequest;
 import in.appnow.blurt.utils.KeyboardUtils;
@@ -69,27 +67,14 @@ public class ConversationModel {
         return appCompatActivity.getIntent().getStringExtra(ConversationActivity.EXTRA_SESSION_ID);
     }
 
-    public Observable<BaseResponseModel> endCurrentChat(EndChatRequest request) {
-        return apiInterface.endChat(request);
-    }
-
 
     public Observable<BaseResponseModel> updateSocketId(UpdateSocketIdRequest request) {
         return apiInterface.updateSocketId(request);
     }
 
 
-    public void showProgressBar() {
-        ProgressDialogFragment.showProgress(appCompatActivity.getSupportFragmentManager());
-    }
-
-    public void hideProgressBar() {
-        ProgressDialogFragment.dismissProgress(appCompatActivity.getSupportFragmentManager());
-
-    }
-
     public void openChatFeedbackActivity(String sessionId) {
-        ChatFeedbackActivity.openChatFeedbackActivity(appCompatActivity, sessionId,true,"Chat successfully done.");
+        ChatFeedbackActivity.openChatFeedbackActivity(appCompatActivity, sessionId, true);
     }
 
     public void updateMessageStatus(UpdateMessageRequest updateMessageRequest) {

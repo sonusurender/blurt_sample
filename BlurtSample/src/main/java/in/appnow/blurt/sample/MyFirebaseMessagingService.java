@@ -45,7 +45,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // ToastUtils.longToast("Data:\n"+remoteMessage.getData().toString());
             try {
                 //JSONObject json = new JSONObject(remoteMessage.getData().toString());
-                BlurtPushReceiver.handleDataMessage(getApplicationContext(), remoteMessage.getData());
+                if (BlurtPushReceiver.isBlurtPushNotification(remoteMessage.getData())) {
+                    BlurtPushReceiver.handleDataMessage(getApplicationContext(), remoteMessage.getData());
+                    return;
+                }
             } catch (Exception e) {
                 Logger.ErrorLog(TAG, "Exception: " + e.getMessage());
             }

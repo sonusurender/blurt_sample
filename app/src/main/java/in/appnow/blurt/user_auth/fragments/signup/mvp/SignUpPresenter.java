@@ -15,6 +15,7 @@ import in.appnow.blurt.rest.response.BaseResponseModel;
 import in.appnow.blurt.rest.response.LoginResponseModel;
 import in.appnow.blurt.rest.response.StartChatResponse;
 import in.appnow.blurt.rest.response.UserProfile;
+import in.appnow.blurt.utils.AppUtils;
 import in.appnow.blurt.utils.Constants;
 import in.appnow.blurt.utils.LocaleUtils;
 import in.appnow.blurt.utils.TextUtils;
@@ -66,7 +67,7 @@ public class SignUpPresenter implements BasePresenter {
                         request.setName(view.getUserName());
                         request.setDeviceType(Constants.DEVICE_TYPE);
                         request.setAppVersion(BuildConfig.VERSION_NAME);
-                        request.setLicenseKey(RestUtils.getLicenseKey(model.getAppCompatActivity()));
+                        request.setLicenseKey(AppUtils.getLicenseKey(model.getAppCompatActivity()));
                         request.setLocale(LocaleUtils.prepareLocaleForServer(model.getAppCompatActivity()));
                         return model.createAccount(request);
                     } else {

@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
-import in.appnow.blurt.base.BaseFragment;
-import in.appnow.blurt.main.MainActivity;
 import in.appnow.blurt.user_auth.UserAuthActivity;
 import in.appnow.blurt.user_auth.fragments.signup.mvp.SignUpPresenter;
 import in.appnow.blurt.user_auth.fragments.signup.mvp.SignUpView;

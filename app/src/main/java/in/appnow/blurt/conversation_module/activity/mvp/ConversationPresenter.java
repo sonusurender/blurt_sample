@@ -30,9 +30,9 @@ import in.appnow.blurt.dao.ABDatabase;
 import in.appnow.blurt.helper.PreferenceManger;
 import in.appnow.blurt.rest.CallbackWrapper;
 import in.appnow.blurt.rest.RestUtils;
-import in.appnow.blurt.rest.request.EndChatRequest;
 import in.appnow.blurt.rest.response.BaseResponseModel;
 import in.appnow.blurt.rest.response.UpdateSocketIdRequest;
+import in.appnow.blurt.utils.AppUtils;
 import in.appnow.blurt.utils.Logger;
 import in.appnow.blurt.utils.ToastUtils;
 import io.reactivex.Observable;
@@ -150,7 +150,7 @@ public class ConversationPresenter implements BasePresenter {
     @SuppressLint("StaticFieldLeak")
     private void addWelcomeMessage() {
         ConversationResponse conversationModel = new ConversationResponse();
-        conversationModel.setMessage(view.getWelcomeMessage());
+        conversationModel.setMessage(AppUtils.getWelcomeMessage(model.getAppCompatActivity()));
         conversationModel.setMessageId(1);
         conversationModel.setMessageStatus(ConversationUtils.MESSAGE_SEND);
         conversationModel.setSenderId("0");//receiver Id
@@ -199,8 +199,8 @@ public class ConversationPresenter implements BasePresenter {
                 if (isConversationGoingOn) {
                     //End chat happened
                     isConversationGoingOn = false;
-                    model.close();
-                    // model.openChatFeedbackActivity(model.getSessionId());
+                   // model.close();
+                     model.openChatFeedbackActivity(model.getSessionId());
                     return;
                 }
                 addWelcomeMessage();
@@ -218,37 +218,6 @@ public class ConversationPresenter implements BasePresenter {
 
     public boolean onBackPress() {
         return view.dismissEmojiPopup();
-    }
-
-    public void onEndChat() {
-        disposable.add(endCurrentChat());
-    }
-
-    private Disposable endCurrentChat() {
-        model.showProgressBar();
-        EndChatRequest request = new EndChatRequest();
-        request.setUserId(preferenceManger.getUserDetails().getUserId());
-        request.setChatSessionId(model.getSessionId());
-        return model.endCurrentChat(request)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnEach(__ -> model.hideProgressBar())
-                .subscribeWith(new CallbackWrapper<BaseResponseModel>(view, 1) {
-                    @Override
-                    protected void onSuccess(BaseResponseModel data) {
-                        if (data != null) {
-                            if (!data.isErrorStatus()) {
-                                AsyncTask.execute(() -> {
-                                    abDatabase.conversationDao().deleteChatTable();
-                                    //openChatFeedbackScreen();
-                                });
-                            } else {
-                                ToastUtils.shortToast(model.getAppCompatActivity(),data.getErrorMsg());
-
-                            }
-                        }
-                    }
-                });
     }
 
     public void openChatFeedbackScreen() {
@@ -510,7 +479,7 @@ public class ConversationPresenter implements BasePresenter {
                     AsyncTask.execute(() -> abDatabase.conversationDao().updateMessageStatusForTimeStamp(ConversationUtils.MESSAGE_SENT, finalTimeStamp));
 
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     };

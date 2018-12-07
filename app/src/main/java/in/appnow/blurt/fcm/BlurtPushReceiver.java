@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -21,6 +22,7 @@ import in.appnow.blurt.conversation_module.utils.ConversationUtils;
 import in.appnow.blurt.helper.PreferenceManger;
 import in.appnow.blurt.rest.response.UserProfile;
 import in.appnow.blurt.user_auth.UserAuthActivity;
+import in.appnow.blurt.utils.AppUtils;
 import in.appnow.blurt.utils.Logger;
 import in.appnow.blurt.utils.StringUtils;
 
@@ -31,6 +33,8 @@ import in.appnow.blurt.utils.StringUtils;
 public class BlurtPushReceiver {
 
     private static final String TAG = BlurtPushReceiver.class.getSimpleName();
+    private static final String NOTIFICATION_SMALL_ICON_METADATA = "com.blurt.small_notification_icon";
+    private static final String BLURT_PREFIX = "Blurt_";
 
     public BlurtPushReceiver() {
     }
@@ -39,6 +43,16 @@ public class BlurtPushReceiver {
         Blurt.getInstance(context).getPreferenceManager().putString(PreferenceManger.FCM_TOKEN, token);
     }
 
+    public static boolean isBlurtPushNotification(Map<String, String> data) {
+        //This is to identify collapse key sent in notification..
+        if (data == null || data.isEmpty()) {
+            return false;
+        }
+        String payLoad = data.toString();
+        Logger.DebugLog(TAG, "Received Notification");
+        // return payLoad != null && payLoad.contains(BLURT_PREFIX);
+        return true;
+    }
 
     @SuppressLint("StaticFieldLeak")
     public static void handleDataMessage(Context context, Map<String, String> dataPayload) {
@@ -68,7 +82,6 @@ public class BlurtPushReceiver {
             String title = jsonObject.getString(Config.TITLE);
             String body = jsonObject.getString(Config.BODY);
             String msg_type = jsonObject.getString(Config.MESSAGE_TYPE);
-            String sessionId = "";
             Logger.DebugLog(TAG, "title: " + title + "\n" + "message: " + body + "\n" + "msg_type : " + msg_type);
 
             //create main activity intent
@@ -80,12 +93,12 @@ public class BlurtPushReceiver {
             switch (msg_type) {
                 case Config.CHAT_MESSAGE_PUSH:
                     //send notification to user
-                    showNotificationMessage(context, title, body, resultIntent, Config.CHAT_MESSAGE_NOTIFICATION_ID, R.mipmap.ic_launcher, NotificationUtils.CHAT_UPDATES_CHANNEL);
+                    showNotificationMessage(context, title, body, resultIntent, Config.CHAT_MESSAGE_NOTIFICATION_ID, AppUtils.getMetaDataValueForResources(context, NOTIFICATION_SMALL_ICON_METADATA), NotificationUtils.CHAT_UPDATES_CHANNEL);
 
                     break;
                 case Config.END_CHAT_PUSH:
                     //send notification to user
-                    showNotificationMessage(context, title, body, resultIntent, Config.END_CHAT_NOTIFICATION_ID, R.mipmap.ic_launcher, NotificationUtils.CHAT_UPDATES_CHANNEL);
+                    showNotificationMessage(context, title, body, resultIntent, Config.END_CHAT_NOTIFICATION_ID, AppUtils.getMetaDataValueForResources(context, ""), NotificationUtils.CHAT_UPDATES_CHANNEL);
 
                     AsyncTask.execute(() -> {
                         Blurt.getInstance(context).getDatabase().conversationDao().deleteChatTable();
@@ -106,11 +119,6 @@ public class BlurtPushReceiver {
                             }
                         });
                     }
-
-                    break;
-                case Config.TRANSACTION_REPORT_PUSH:
-                    //send notification to user
-                    showNotificationMessage(context, title, body, resultIntent, Config.GENERAL_NOTIFICATION, R.mipmap.ic_launcher, NotificationUtils.CHAT_UPDATES_CHANNEL);
 
                     break;
             }

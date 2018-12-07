@@ -68,8 +68,6 @@ public class ConversationActivityView extends FrameLayout implements BaseView {
     @BindView(R2.id.chat_queue_sequence_label)
     TextView queueSequenceLabel;
 
-    @BindString(R2.string.chat_welcome_message)
-    String welcomeMessage;
     @BindString(R2.string.chat_wait_message)
     String waitMessage;
     @BindString(R2.string.chat_sequence)
@@ -146,6 +144,7 @@ public class ConversationActivityView extends FrameLayout implements BaseView {
             ImageUtils.changeImageColor(sendButton, appCompatActivity, R.color.white_transparent_70);
         }
     }
+
     public void updateTypeMessage(String text) {
         typeMessage.setText(text);
     }
@@ -163,7 +162,7 @@ public class ConversationActivityView extends FrameLayout implements BaseView {
     }
 
     public void setMessage(String message) {
-        ToastUtils.longToast(appCompatActivity,message);
+        ToastUtils.longToast(appCompatActivity, message);
     }
 
     private void setUpEmojiconPopup() {
@@ -204,16 +203,12 @@ public class ConversationActivityView extends FrameLayout implements BaseView {
         }
     }
 
-    public String getWelcomeMessage() {
-        return welcomeMessage;
-    }
-
 
     /* =====   Update queue label Methods STARTED!!!!  ===== */
 
     public void updateQueueLabelText(String text) {
         queueSequenceLabel.setText(text);
-       showHideQueueLabel(View.VISIBLE);
+        showHideQueueLabel(View.VISIBLE);
     }
 
     public void showHideQueueLabel(int visibility) {
@@ -224,11 +219,11 @@ public class ConversationActivityView extends FrameLayout implements BaseView {
 
     public void updateTypingStatus(int typingStatus) {
         if (typingStatus == ConversationUtils.TYPING_STATUS) {
-            toolbarSubtitle.setText(typingStatusString);
+            toolbarSubtitle.setText("Agent (" + typingStatusString + ")");
             toolbarSubtitle.setVisibility(View.VISIBLE);
         } else {
             if (!TextUtils.isEmpty(handlerStatus)) {
-                toolbarSubtitle.setText(handlerStatus);
+                toolbarSubtitle.setText("Agent (" + handlerStatus + ")");
                 toolbarSubtitle.setVisibility(View.VISIBLE);
             } else {
                 toolbarSubtitle.setVisibility(View.GONE);

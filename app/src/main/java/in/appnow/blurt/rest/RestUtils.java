@@ -25,17 +25,4 @@ public class RestUtils {
         return Blurt.getDebug() ? "server.crt" : "server.crt";
     }
 
-    public static String getLicenseKey(Context context) {
-        try {
-            ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            Bundle bundle = ai.metaData;
-            return bundle.getString("blurt_api_key");
-        } catch (PackageManager.NameNotFoundException e) {
-            ToastUtils.shortToast(context,"Failed to load meta-data, NameNotFound: " + e.getMessage());
-            return "";
-        } catch (NullPointerException e) {
-            ToastUtils.shortToast(context,"Failed to load meta-data, NullPointer:" + e.getMessage());
-            return "";
-        }
-    }
 }

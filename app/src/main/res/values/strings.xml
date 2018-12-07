@@ -11,7 +11,6 @@
     <string name="camera_not_supported">Your device doesn\'t support camera.</string>
     <string name="refresh">Refresh</string>
     <string name="exit">Exit</string>
-    <string name="chat_welcome_message">Hi, Welcome to Blurt. How can we help you?</string>
     <string name="chat_wait_message">Please wait while we connect you to an AstroBuddy.</string>
     <string name="chat_sequence">All Astrobuddies are serving other customers. You are in the queue at position : %d</string>
     <string name="astrobuddy_join_message">AstroBuddy will join the chat shortly. Please wait.</string>
@@ -24,29 +23,4 @@
     <string name="submit">Submit</string>
     <string name="your_feedback">Your Feedback</string>
     <string name="term_condition">By starting chat, you agree to Blurt\'s <font fgcolor="blue">Terms &amp; Conditions</font> and <font fgcolor="blue">Cookie &amp; Privacy Policy.</font></string>
-
-    <string name="action_home">Home</string>
-    <string name="action_profile">My Profile</string>
-    <string name="action_catalogues">Catalogues</string>
-    <string name="action_setting">Setting</string>
-    <string name="action_contact_us">Contact Us</string>
-    <string name="action_about_us">About Us</string>
-
-    <string-array name="navigation_menu">
-        <item>@string/action_home</item>
-        <item>@string/action_profile</item>
-        <item>@string/action_catalogues</item>
-        <item>@string/action_setting</item>
-        <item>@string/action_contact_us</item>
-        <item>@string/action_about_us</item>
-    </string-array>
-
-    <string-array name="category_array">
-        <item>Seating</item>
-        <item>Desks</item>
-        <item>Storage</item>
-        <item>Lighting/Lamps</item>
-        <item>Cabinets</item>
-        <item>Lobby Seats</item>
-    </string-array>
 </resources>

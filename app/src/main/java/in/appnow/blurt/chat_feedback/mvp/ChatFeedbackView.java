@@ -27,12 +27,8 @@ import io.reactivex.Observable;
  */
 public class ChatFeedbackView extends FrameLayout implements BaseView {
 
-    @BindView(R2.id.chat_feedback_message_label)
-    TextView feedbackMessageLabel;
     @BindView(R2.id.feedback_rating_bar)
     RatingBar feedbackRating;
-    @BindView(R2.id.enter_chat_feedback)
-    EditText enterChatFeedback;
     @BindView(R2.id.chat_feedback_submit_button)
     Button submitButton;
     @BindString(R2.string.unknown_error)
@@ -46,14 +42,6 @@ public class ChatFeedbackView extends FrameLayout implements BaseView {
 
     public Observable<Object> observeSubmitButton() {
         return RxView.clicks(submitButton);
-    }
-
-    public void updateMessageLabel(String message) {
-        feedbackMessageLabel.setText(message);
-    }
-
-    public String getChatFeedback() {
-        return enterChatFeedback.getText().toString().trim();
     }
 
     public float getChatRating() {

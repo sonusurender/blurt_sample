@@ -17,7 +17,8 @@ public class SampleActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Blurt.init(this);
-        startActivity(new Intent(this,UserAuthActivity.class));
+        Blurt.enableDebug(true);
+        UserAuthActivity.openUserAuthActivity(this);
         finish();
     }
 }

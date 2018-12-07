@@ -5,19 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import javax.inject.Inject;
 
-import in.appnow.blurt.R2;
 import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.conversation_module.activity.dagger.ConversationModule;
 import in.appnow.blurt.conversation_module.activity.dagger.DaggerConversationComponent;
 import in.appnow.blurt.conversation_module.activity.mvp.ConversationActivityView;
 import in.appnow.blurt.conversation_module.activity.mvp.ConversationPresenter;
-import in.appnow.blurt.conversation_module.chat_interfaces.OnChatToolbarMenuClickListener;
 import in.appnow.blurt.conversation_module.utils.ConversationUtils;
-import in.appnow.blurt.dialog.DialogHelperClass;
 import in.appnow.blurt.fcm.Config;
 import in.appnow.blurt.fcm.NotificationUtils;
 
@@ -26,7 +22,7 @@ import in.appnow.blurt.fcm.NotificationUtils;
  * Created by sonu on 19/12/17.
  */
 
-public class ConversationActivity extends AppCompatActivity implements OnChatToolbarMenuClickListener {
+public class ConversationActivity extends AppCompatActivity{
 
     private static final String TAG = ConversationActivity.class.getSimpleName();
 
@@ -90,32 +86,4 @@ public class ConversationActivity extends AppCompatActivity implements OnChatToo
         presenter.updateTypingStatus(ConversationUtils.NO_TYPING_STATUS);
         super.onPause();
     }
-
-    @Override
-    public void onDeleteOptionClick() {
-        //    deleteSelectedMessages();
-    }
-
-    @Override
-    public void destroyActionMode() {
-        // setNullToActionMode();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R2.id.action_refresh:
-                //  fetchAllMessages();
-                break;
-            case R2.id.action_exit:
-                if (Blurt.getInstance(this).isInternetConnected(true)) {
-                    DialogHelperClass.showMessageOKCancel(ConversationActivity.this, "Are you sure you want to exit from chat.", "Ok", "Cancel", (dialogInterface, i) -> presenter.onEndChat(), null);
-                }
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-
 }

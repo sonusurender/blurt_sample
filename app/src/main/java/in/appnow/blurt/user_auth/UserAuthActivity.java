@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import javax.inject.Inject;
 
@@ -91,8 +92,19 @@ public class UserAuthActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        NotificationUtils.clearSingleNotification(this,Config.END_CHAT_NOTIFICATION_ID);
+        NotificationUtils.clearSingleNotification(this, Config.END_CHAT_NOTIFICATION_ID);
     }
 }

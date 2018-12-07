@@ -67,7 +67,7 @@ public class CommonActivity extends AppCompatActivity {
             if (fragmentTag == null)
                 return;
             if (fragmentTag.equalsIgnoreCase(FragmentUtils.WEB_VIEW_FRAGMENT)) {
-                FragmentUtils.replaceFragmentCommon(getSupportFragmentManager(), R.id.common_frame_container, WebViewFragment.newInstance("https://www.astrobuddy.guru/privacy-policy.php", "", false), fragmentTag, false);
+                FragmentUtils.replaceFragmentCommon(getSupportFragmentManager(), R.id.common_frame_container, WebViewFragment.newInstance("http://blurt.nexxio.in/#!/terms", "", false), fragmentTag, false);
             }
         }
     }

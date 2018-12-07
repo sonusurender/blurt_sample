@@ -28,9 +28,6 @@ public class ChatFeedbackModel {
         return appCompatActivity;
     }
 
-    /* public int getTopicsDebited() {
-             return appCompatActivity.getIntent().getIntExtra(ChatFeedbackActivity.ARG_TOPIC, 0);
-         }*/
     public Observable<BaseResponseModel> sendChatFeedback(ChatFeedbackRequest request) {
         return apiInterface.submitChatFeedback(request);
     }
@@ -38,13 +35,9 @@ public class ChatFeedbackModel {
     public String getSessionId() {
         return appCompatActivity.getIntent().getStringExtra(ChatFeedbackActivity.ARG_SESSION_ID);
     }
-    public String getMessage() {
-        return appCompatActivity.getIntent().getStringExtra(ChatFeedbackActivity.ARG_MESSAGE);
-    }
 
     public void closeActivity() {
         appCompatActivity.finish();
-        //appCompatActivity.onBackPressed();
     }
 
     public void showProgress() {
