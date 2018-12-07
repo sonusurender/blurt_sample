@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import in.appnow.blurt.BuildConfig;
+import in.appnow.blurt.app.Blurt;
 import in.appnow.blurt.utils.ToastUtils;
 
 /**
@@ -17,18 +18,18 @@ import in.appnow.blurt.utils.ToastUtils;
 public class RestUtils {
 
     public static String getEndPoint() {
-        return BuildConfig.DEBUG ? BuildConfig.PRODUCTION_END_POINT : BuildConfig.PRODUCTION_END_POINT;
+        return Blurt.getDebug() ? BuildConfig.PRODUCTION_END_POINT : BuildConfig.PRODUCTION_END_POINT;
     }
 
     public static String getCertFileName() {
-        return BuildConfig.DEBUG ? "server.crt" : "server.crt";
+        return Blurt.getDebug() ? "server.crt" : "server.crt";
     }
 
     public static String getLicenseKey(Context context) {
         try {
             ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
-            return String.valueOf(bundle.getInt("blurt_api_key"));
+            return bundle.getString("blurt_api_key");
         } catch (PackageManager.NameNotFoundException e) {
             ToastUtils.shortToast(context,"Failed to load meta-data, NameNotFound: " + e.getMessage());
             return "";
