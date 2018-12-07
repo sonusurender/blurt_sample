@@ -23,4 +23,5 @@
     <string name="submit">Submit</string>
     <string name="your_feedback">Your Feedback</string>
     <string name="term_condition">By starting chat, you agree to Blurt\'s <font fgcolor="blue">Terms &amp; Conditions</font> and <font fgcolor="blue">Cookie &amp; Privacy Policy.</font></string>
+    <string name="welcome_message">Hi Welcome. How may i help you?</string>
 </resources>

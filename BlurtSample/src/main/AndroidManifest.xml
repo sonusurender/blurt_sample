@@ -32,7 +32,7 @@
 
         <meta-data
             android:name="com.blurt.welcome.message"
-            android:value="Hi Welcome to Empconnect. How may i help you?" />
+            android:value="Hi Welcome to Blurt Sample. How may i help you?" />
 
         <meta-data
             android:name="com.blurt.small_notification_icon"

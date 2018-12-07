@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.provider.Telephony;
 import android.support.v7.app.AppCompatActivity;
 
+import in.appnow.blurt.R2;
+
 
 /**
  * Created by sonu on 22:42, 24/04/18
@@ -87,10 +89,10 @@ public class AppUtils {
             return bundle.getString("com.blurt.welcome.message");
         } catch (PackageManager.NameNotFoundException e) {
             ToastUtils.shortToast(context, "Failed to load meta-data, NameNotFound: " + e.getMessage());
-            return "";
+            return context.getResources().getString(R2.string.welcome_message);
         } catch (NullPointerException e) {
             ToastUtils.shortToast(context, "Failed to load meta-data, NullPointer:" + e.getMessage());
-            return "";
+            return context.getResources().getString(R2.string.welcome_message);
         }
     }
 
