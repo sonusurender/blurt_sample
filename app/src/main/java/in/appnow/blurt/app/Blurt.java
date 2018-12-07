@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
@@ -135,8 +136,10 @@ public class Blurt {
     }
 
     public static void logoutUser(Context context) {
-        Blurt.getInstance(context).getPreferenceManager().logoutUser();
-        Blurt.getInstance(context).getDatabase().conversationDao().deleteChatTable();
+        AsyncTask.execute(() -> {
+            Blurt.getInstance(context).getPreferenceManager().logoutUser();
+            Blurt.getInstance(context).getDatabase().conversationDao().deleteChatTable();
+        });
     }
 
 
