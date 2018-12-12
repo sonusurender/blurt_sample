@@ -101,7 +101,17 @@ public class AppUtils {
             ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = ai.metaData;
             if (ai.metaData != null) {
-                return bundle.getInt(metaDataName);
+                try {
+
+                    // TODO: 11/12/18 Change the small icon code here
+                 //   Integer metaDataValue = bundle.getInt(metaDataName);
+                   // return metaDataValue == 0 ? null : metaDataValue;
+                    return getLauncherIcon(context);
+                } catch (ClassCastException e) {
+                    e.printStackTrace();
+                    return getLauncherIcon(context);
+                }
+
             }
         } catch (PackageManager.NameNotFoundException e) {
             ToastUtils.shortToast(context, "Failed to load meta-data, NameNotFound: " + e.getMessage());

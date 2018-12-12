@@ -6,10 +6,12 @@ import android.text.TextUtils;
 import android.view.View;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -134,12 +136,7 @@ public class ConversationPresenter implements BasePresenter {
 
                         Logger.DebugLog(TAG, "Send message : " + jsonObject.toString());
 
-                        mSocket.emit(EVENT_SEND_MESSAGE, jsonObject, new Ack() {
-                            @Override
-                            public void call(Object... args) {
-                                Logger.DebugLog(TAG, "Message Send : " + args[0]);
-                            }
-                        });
+                        mSocket.emit(EVENT_SEND_MESSAGE, jsonObject, (Ack) args -> Logger.DebugLog(TAG, "Message Send : " + args[0]));
 
                         AsyncTask.execute(() -> abDatabase.conversationDao().insert(response));
 
@@ -181,6 +178,7 @@ public class ConversationPresenter implements BasePresenter {
             mSocket.disconnect();
             mSocket.off(EVENT_NOTIFICATION, onHandlerCallback);
             mSocket.off(EVENT_MESSAGES, onNewMessage);
+            mSocket.off(EVENT_MSG_HELPER, onMsgHelper);
         }
         disposable.clear();
     }
@@ -199,8 +197,8 @@ public class ConversationPresenter implements BasePresenter {
                 if (isConversationGoingOn) {
                     //End chat happened
                     isConversationGoingOn = false;
-                   // model.close();
-                     model.openChatFeedbackActivity(model.getSessionId());
+                    // model.close();
+                    model.openChatFeedbackActivity(model.getSessionId());
                     return;
                 }
                 addWelcomeMessage();
@@ -251,9 +249,7 @@ public class ConversationPresenter implements BasePresenter {
                 e.printStackTrace();
             }
         }
-
     }
-
 
     private void checkIfAnyMessageStatusIsNotRead(List<ConversationResponse> conversationResponses) {
         if (isChatMessageStatusUpdated)
@@ -286,6 +282,7 @@ public class ConversationPresenter implements BasePresenter {
     private static final String EVENT_SEND_MESSAGE = "send_msg";
     private static final String EVENT_NOTIFICATION = "notification";
     private static final String EVENT_MESSAGES = "messages";
+    private static final String EVENT_MSG_HELPER = "msg_helper";
 
     private Socket mSocket;
 
@@ -364,6 +361,8 @@ public class ConversationPresenter implements BasePresenter {
 
         mSocket.on(EVENT_NOTIFICATION, onHandlerCallback);
         mSocket.on(EVENT_MESSAGES, onNewMessage);
+        mSocket.on(EVENT_MSG_HELPER, onMsgHelper);
+
         mSocket.connect();
 
     }
@@ -409,8 +408,7 @@ public class ConversationPresenter implements BasePresenter {
                                 try {
                                     agent_Id = data.getString("agent_id");
                                     agentId = agent_Id;
-                                }
-                                catch (Exception ignored){
+                                } catch (Exception ignored) {
 
                                 }
                             }
@@ -431,13 +429,45 @@ public class ConversationPresenter implements BasePresenter {
                             break;
                         case "END_CHAT":
                             AsyncTask.execute(() -> abDatabase.conversationDao().deleteChatTable());
-                            ToastUtils.longToast(model.getAppCompatActivity(),"Chat finished");
+                            ToastUtils.longToast(model.getAppCompatActivity(), "Chat finished");
+                            break;
+                        case "STORED_MSG":
+                            //get all messages
+                            try {
+                                if (data.has("result")) {
+                                    JSONArray chatArray = data.getJSONArray("result");
+                                    if (chatArray != null && chatArray.length() > 0) {
+                                        List<ConversationResponse> conversationResponseList = new ArrayList<>();
+                                        for (int i = 0; i < chatArray.length(); i++) {
+                                            JSONObject jsonObject = chatArray.getJSONObject(i);
+                                            long msgId = jsonObject.getLong("msg_id");
+                                            String message = jsonObject.getString("msg");
+                                            long timeStamp = jsonObject.getLong("timestamp");
+                                            String sentBy = jsonObject.getString("sentBy");
+                                            String status = jsonObject.getString("status");
+                                            String chatId = jsonObject.getString("chat_id");
+
+                                            ConversationResponse response = new ConversationResponse();
+                                            response.setMessage(message);
+                                            response.setMessageStatus(ConversationUtils.MESSAGE_RECEIVED);
+                                            response.setSendDateTime(timeStamp);
+                                            response.setMessageId(msgId);
+                                            response.setMessageStatus(status);
+                                            response.setSessionId(chatId);
+                                            response.setSenderId(sentBy);
+                                            conversationResponseList.add(response);
+                                        }
+                                        updateMessageStatus(conversationResponseList);
+                                    }
+                                }
+                            } catch (Exception ignored) {
+                            }
                             break;
                     }
                 });
 
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     };
@@ -450,37 +480,48 @@ public class ConversationPresenter implements BasePresenter {
         @Override
         public void call(Object... args) {
             Logger.DebugLog(TAG, "EVENT NEW MESSAGE : " + args[0].toString());
-            try {
-                JSONObject data = (JSONObject) args[0];
-                String sessionId = "", message = "", sender = "";
-                long timeStamp = 0;
-                if (data.has("chat_id")) {
-                    sessionId = data.getString("chat_id");
-                }
-                if (data.has("msg")) {
-                    message = data.getString("msg");
-                }
-                if (data.has("timestamp")) {
-                    timeStamp = data.getLong("timestamp");
-                }
-                if (data.has("sentBy")) {
-                    sender = data.getString("sentBy");
-                }
-                if (!sender.equalsIgnoreCase(preferenceManger.getUserDetails().getUserId())) {
-                    ConversationResponse response = new ConversationResponse();
-                    response.setMessage(message);
-                    response.setMessageStatus(ConversationUtils.MESSAGE_RECEIVED);
-                    response.setSendDateTime(timeStamp);
-                    response.setSessionId(sessionId);
-                    response.setSenderId(sender);
-                    AsyncTask.execute(() -> abDatabase.conversationDao().insert(response));
-                } else {
-                    long finalTimeStamp = timeStamp;
-                    AsyncTask.execute(() -> abDatabase.conversationDao().updateMessageStatusForTimeStamp(ConversationUtils.MESSAGE_SENT, finalTimeStamp));
+            model.getAppCompatActivity().runOnUiThread(() -> {
 
+                try {
+                    JSONObject data = (JSONObject) args[0];
+                    String sessionId = "", message = "", sender = "";
+                    long timeStamp = 0, messageId = 0;
+                    if (data.has("chat_id")) {
+                        sessionId = data.getString("chat_id");
+                    }
+                    if (data.has("msg")) {
+                        message = data.getString("msg");
+                    }
+                    if (data.has("timestamp")) {
+                        timeStamp = data.getLong("timestamp");
+                    }
+                    if (data.has("sentBy")) {
+                        sender = data.getString("sentBy");
+                    }
+                    if (data.has("msg_id")) {
+                        messageId = data.getLong("msg_id");
+                    }
+                    if (!sender.equalsIgnoreCase(preferenceManger.getUserDetails().getUserId())) {
+                        ConversationResponse response = new ConversationResponse();
+                        response.setMessage(message);
+                        response.setMessageStatus(ConversationUtils.MESSAGE_RECEIVED);
+                        response.setSendDateTime(timeStamp);
+                        response.setSessionId(sessionId);
+                        response.setSenderId(sender);
+                        response.setMessageId(messageId);
+                        AsyncTask.execute(() -> abDatabase.conversationDao().insert(response));
+                        if (messageId > 0) {
+                            updateMessageStatus(new JSONArray().put(messageId));
+                        }
+                    } else {
+                        long finalTimeStamp = timeStamp;
+                        long finalMessageId = messageId;
+                        AsyncTask.execute(() -> abDatabase.conversationDao().updateMessageStatusForTimeStamp(ConversationUtils.MESSAGE_SENT, finalTimeStamp, finalMessageId));
+
+                    }
+                } catch (Exception ignored) {
                 }
-            } catch (Exception ignored) {
-            }
+            });
         }
     };
 
@@ -494,16 +535,107 @@ public class ConversationPresenter implements BasePresenter {
                 .subscribeWith(new CallbackWrapper<BaseResponseModel>(view, 1) {
                     @Override
                     protected void onSuccess(BaseResponseModel data) {
-                            joinChatRoom();
-                            if (!isChatMessageFetched) {
-                                fetchAllChatMessages();
-                                FetchMessageRequest requestModel = new FetchMessageRequest();
-                                requestModel.setSessionId(model.getSessionId());
-                                model.getAllMessagesFromServer(requestModel);
-                                isChatMessageFetched = true;
-                            }
+                        joinChatRoom();
+                        if (!isChatMessageFetched) {
+                            fetchAllChatMessages();
+                            FetchMessageRequest requestModel = new FetchMessageRequest();
+                            requestModel.setSessionId(model.getSessionId());
+                            model.getAllMessagesFromServer(requestModel);
+                            isChatMessageFetched = true;
                         }
+                    }
                 });
+    }
+
+    private void updateMessageStatus(List<ConversationResponse> conversationResponseList) {
+        if (isChatMessageStatusUpdated)
+            return;
+
+        isChatMessageStatusUpdated = true;
+        if (conversationResponseList != null && conversationResponseList.size() > 0) {
+            JSONArray messageIds = new JSONArray();
+            for (ConversationResponse conversationResponse : conversationResponseList) {
+                if (conversationResponse.getMessageId() > 1) {//1 is for default welcome message
+                    if (isCurrentUser(conversationResponse.getSenderId())) {
+                        if (!conversationResponse.getMessageStatus().equals(ConversationUtils.MESSAGE_READ)) {
+                            messageIds.put(conversationResponse.getMessageId());
+                        }
+                    }
+                }
+            }
+            if (messageIds.length() > 0)
+                updateMessageStatus(messageIds);
+        }
+    }
+
+    private void updateMessageStatus(JSONArray messageIds) {
+        if (mSocket != null) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("chat_id", model.getSessionId());
+                jsonObject.put("TYPE", "MSG_DELIVERY");
+                jsonObject.put("sender", preferenceManger.getUserDetails().getUserId());
+                jsonObject.put("notify", agentId);//user id
+                jsonObject.put("msg_status", ConversationUtils.MESSAGE_READ);//user id
+                jsonObject.put("msg_id", messageIds);//user id
+                Logger.DebugLog(TAG, "UPDATE STATUS : " + jsonObject.toString());
+                mSocket.emit(EVENT_MSG_HELPER, jsonObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Emitter.Listener onMsgHelper = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            Logger.DebugLog(TAG, "EVENT MSG CALLBACK : " + args[0].toString());
+
+            model.getAppCompatActivity().runOnUiThread(() -> {
+                try {
+                    JSONObject data = (JSONObject) args[0];
+                    String sessionId = "", status = "", sender = "";
+                    long[] messageId = null;
+
+                    if (data.has("chat_id")) {
+                        sessionId = data.getString("chat_id");
+                    }
+                    if (data.has("sender")) {
+                        sender = data.getString("sender");
+                    }
+                    if (data.has("msg_id")) {
+                        JSONArray messageIdArray = data.getJSONArray("msg_id");
+                        JSONArray messageIdArry = messageIdArray.getJSONArray(0);
+                        messageId = new long[messageIdArry.length()];
+                        for (int i = 0; i < messageIdArry.length(); i++) {
+                            messageId[i] = messageIdArry.getLong(i);
+                        }
+                    }
+                    if (data.has("msg_status")) {
+                        status = data.getString("msg_status");
+                    }
+                    Logger.DebugLog(TAG, "MSG CALLBACK : " + preferenceManger.getUserDetails().getUserId() + " - " + sender);
+                    if (!sender.equalsIgnoreCase(preferenceManger.getUserDetails().getUserId()) && messageId != null && messageId.length > 0) {
+                        //  view.updateChatStatus(messageId, status);
+                        updateMessageStatus(messageId, status);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+        }
+    };
+
+    private void updateMessageStatus(long[] messageIds, String status) {
+        Logger.DebugLog(TAG, "UPDATE MESSAGE : " + Arrays.toString(messageIds) + " - " + status);
+        AsyncTask.execute(() -> {
+            for (Long messageId : messageIds) {
+                int id = abDatabase.conversationDao().updateChatMessageStatus(status, messageId);
+                Logger.DebugLog(TAG, "UPDATE DONE : " + id);
+            }
+        });
+
     }
 
 

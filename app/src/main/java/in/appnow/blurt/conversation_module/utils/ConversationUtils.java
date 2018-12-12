@@ -21,8 +21,8 @@ public class ConversationUtils {
      */
     public static final String MESSAGE_SEND = "SEND";
     public static final String MESSAGE_SENT = "SENT";
-    public static final String MESSAGE_RECEIVED = "RECEIVED";
-    public static final String MESSAGE_READ = "READ";
+    public static final String MESSAGE_RECEIVED = "DEL";
+    public static final String MESSAGE_READ = "SEEN";
     public static final String MESSAGE_FAILED = "FAILED";
 
     /**

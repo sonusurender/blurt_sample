@@ -75,6 +75,7 @@ public class PreferenceManger {
         Gson gson = new Gson();
         String json = gson.toJson(user);
         putString(LOGIN_DETAILS, json);
+        //putString(AUTH_TOKEN,user.getAuthToken());
     }
 
     public UserProfile getUserDetails() {

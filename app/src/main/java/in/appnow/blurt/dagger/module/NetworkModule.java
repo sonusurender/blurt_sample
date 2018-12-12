@@ -59,10 +59,10 @@ public class NetworkModule {
         client.readTimeout(5, TimeUnit.MINUTES)
                 .connectTimeout(5, TimeUnit.MINUTES)
                 .writeTimeout(5, TimeUnit.MINUTES)
-                .addInterceptor(chain -> {
-                    Request request = chain.request().newBuilder().addHeader("auth-token", preferenceManger.getStringValue(PreferenceManger.AUTH_TOKEN)).build();
+               /* .addInterceptor(chain -> {
+                    Request request = chain.request().newBuilder().addHeader("x-access-token", preferenceManger.getStringValue(PreferenceManger.AUTH_TOKEN)).build();
                     return chain.proceed(request);
-                })
+                })*/
                 .addInterceptor(loggingInterceptor)
                 .cache(cache);
         return client.build();

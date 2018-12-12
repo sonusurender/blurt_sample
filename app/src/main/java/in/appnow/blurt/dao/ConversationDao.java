@@ -30,8 +30,8 @@ public interface ConversationDao extends BaseDao<ConversationResponse> {
     @Query("UPDATE Chat SET messageStatus= :status WHERE msgId = :msgId")
     int updateChatMessageStatus(String status, long msgId);
 
-    @Query("UPDATE Chat SET messageStatus= :status WHERE sendDateTime = :timeStamp")
-    int updateMessageStatusForTimeStamp(String status, long timeStamp);
+    @Query("UPDATE Chat SET messageStatus= :status, msgId= :messageId WHERE sendDateTime = :timeStamp")
+    int updateMessageStatusForTimeStamp(String status, long timeStamp, long messageId);
 
     @Query("UPDATE Chat SET msgId= :msgId WHERE msgTempId = :tempMsgId")
     int updateMessageId(long tempMsgId, long msgId);

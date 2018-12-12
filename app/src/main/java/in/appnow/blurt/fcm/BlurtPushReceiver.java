@@ -34,7 +34,7 @@ public class BlurtPushReceiver {
 
     private static final String TAG = BlurtPushReceiver.class.getSimpleName();
     private static final String NOTIFICATION_SMALL_ICON_METADATA = "com.blurt.small_notification_icon";
-    private static final String BLURT_PREFIX = "Blurt_";
+    private static final String BLURT_PREFIX = "blurtping";
 
     public BlurtPushReceiver() {
     }
@@ -50,8 +50,8 @@ public class BlurtPushReceiver {
         }
         String payLoad = data.toString();
         Logger.DebugLog(TAG, "Received Notification");
-        // return payLoad != null && payLoad.contains(BLURT_PREFIX);
-        return true;
+        return payLoad != null && payLoad.contains(BLURT_PREFIX);
+        //return true;
     }
 
     @SuppressLint("StaticFieldLeak")

@@ -107,6 +107,7 @@ public class ConversationActivityView extends FrameLayout implements BaseView {
     private void setUpRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         conversationRecyclerView.setLayoutManager(linearLayoutManager);
+        conversationRecyclerView.setNestedScrollingEnabled(false);
         conversationRecyclerView.setAdapter(adapter);
     }
 

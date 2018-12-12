@@ -36,7 +36,7 @@
 
         <meta-data
             android:name="com.blurt.small_notification_icon"
-            android:value="@mipmap/ic_launcher" />
+            android:value="@drawable/ic_notification_icon" />
 
         <service
             android:name=".MyFirebaseMessagingService"
