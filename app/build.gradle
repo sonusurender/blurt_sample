@@ -15,6 +15,8 @@ android {
         buildConfigField 'String', 'STAGING_END_POINT', (project.findProperty("STAGING_END_POINT") ?: "")
         buildConfigField 'String', 'PRODUCTION_END_POINT', (project.findProperty("PRODUCTION_END_POINT") ?: "")
 
+        //to keep sdk proguard
+        consumerProguardFiles 'proguard-rules.pro'
 
         //to see the structure of Database
         javaCompileOptions {

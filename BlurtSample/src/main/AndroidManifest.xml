@@ -30,13 +30,15 @@
             android:name="com.blurt.application.key"
             android:value="eg3a7xsfswt1538049995452w2c2vkz5hhb" />
 
+        <!-- If welcome message is not provided then default message will pick -->
         <meta-data
             android:name="com.blurt.welcome.message"
             android:value="Hi Welcome to Blurt Sample. How may i help you?" />
 
+        <!-- If small icon is not provided then it will pick launcher icon -->
         <meta-data
             android:name="com.blurt.small_notification_icon"
-            android:value="@drawable/ic_notification_icon" />
+            android:resource="@drawable/ic_notification_icon" />
 
         <service
             android:name=".MyFirebaseMessagingService"
