@@ -35,4 +35,4 @@
 -dontwarn retrofit2.**
 -dontwarn org.joda.time.**
 
--keep public class in.appnow.blurt.utils.ToastUtils
+-keep class in.appnow.blurt.utils.ToastUtils.** { *; }
