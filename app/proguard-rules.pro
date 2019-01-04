@@ -34,3 +34,5 @@
 -dontwarn okio.**
 -dontwarn retrofit2.**
 -dontwarn org.joda.time.**
+
+-keep public class in.appnow.blurt.utils.ToastUtils
