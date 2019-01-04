@@ -17,36 +17,31 @@ import in.appnow.blurt.app.Blurt;
 
 public class ToastUtils {
 
-    public static void shortToast(Context context,@StringRes int text) {
-        shortToast(context,context.getResources().getString(text));
+    public static void shortToast(Context context, @StringRes int text) {
+        shortToast(context, context.getResources().getString(text));
     }
 
-    public static void shortToast(Context context,String text) {
+    public static void shortToast(Context context, String text) {
         if (TextUtils.isEmpty(text))
             return;
-        show(context,text, Toast.LENGTH_SHORT);
+        show(context, text, Toast.LENGTH_SHORT);
     }
 
-    public static void longToast(Context context,@StringRes int text) {
-        longToast(context,context.getResources().getString(text));
+    public static void longToast(Context context, @StringRes int text) {
+        longToast(context, context.getResources().getString(text));
     }
 
-    public static void longToast(Context context,String text) {
+    public static void longToast(Context context, String text) {
         if (TextUtils.isEmpty(text))
             return;
-        show(context,text, Toast.LENGTH_LONG);
+        show(context, text, Toast.LENGTH_LONG);
     }
 
-    private static Toast makeToast(Context context,String text, @ToastLength int length) {
+    private static Toast makeToast(Context context, String text, int length) {
         return Toast.makeText(context, text, length);
     }
 
-    private static void show(Context context,String text, @ToastLength int length) {
-        makeToast(context,text, length).show();
-    }
-
-    @IntDef({Toast.LENGTH_LONG, Toast.LENGTH_SHORT})
-    private @interface ToastLength {
-
+    private static void show(Context context, String text, int length) {
+        makeToast(context, text, length).show();
     }
 }
